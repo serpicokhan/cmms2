@@ -70,6 +70,15 @@ class _WoDetailState extends State<WoDetail>
     futureAlbum = fetchAlbum(widget.id);
   }
 
+  var items = [
+    'Apple',
+    'Banana',
+    'Grapes',
+    'Orange',
+    'watermelon',
+    'Pineapple'
+  ];
+  String dropdownvalue = 'Apple';
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -79,14 +88,36 @@ class _WoDetailState extends State<WoDetail>
             future: futureAlbum,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return Column(
-                  children: [
-                    Text(snapshot.data!.position),
-                    Text(snapshot.data!.id.toString()),
-                    Text(snapshot.data!.description),
-                    Text(snapshot.data!.company),
-                    // Text(snapshot.data!.position),
-                  ],
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      DropdownButton(
+                        value: dropdownvalue,
+                        icon: Icon(Icons.keyboard_arrow_down),
+                        items: items.map((String items) {
+                          return DropdownMenuItem(
+                              value: items, child: Text(items));
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownvalue = newValue!;
+                          });
+                        },
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Text(snapshot.data!.position),
+
+                      Text(snapshot.data!.id.toString()),
+                      Text(snapshot.data!.description),
+                      Text(snapshot.data!.company),
+                      // Text(snapshot.data!.position),
+                    ],
+                  ),
                 );
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
