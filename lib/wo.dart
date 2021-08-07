@@ -1,3 +1,4 @@
+import 'package:flutter/scheduler.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
@@ -34,26 +35,49 @@ class _ListViewHomeState extends State<ListViewHome>
 
 class Job {
   final int id;
+  final int woStatus;
+  final int priority;
   final String position;
   final String company;
   final String description;
   final String color;
+  final String datecreated;
+  final String timecreated;
+  final String maintenanceType;
+  final String assignedTo;
 
   Job(
       {required this.id,
       required this.position,
       required this.company,
       required this.description,
-      required this.color});
+      required this.datecreated,
+      required this.timecreated,
+      required this.woStatus,
+      required this.maintenanceType,
+      required this.color,
+      required this.assignedTo,
+      required this.priority});
 
   factory Job.fromJson(Map<String, dynamic> json) {
     return Job(
-      id: json['id'],
-      position: json['summaryofIssue'],
-      company: json['woAsset'],
-      description: json['datecreated'],
-      color: json['maintenanceType'],
-    );
+        id: json['id'],
+        position: json['summaryofIssue'],
+        company: json['woAsset'],
+        description:
+            (json['workInstructions'] == null) ? '' : json['workInstructions'],
+        maintenanceType:
+            (json['maintenanceType'] == null) ? '' : json['maintenanceType'],
+        color: json['maintenanceType'],
+        datecreated:
+            (json['datecreated'] == null) ? 'مشخص نشده' : json['datecreated'],
+        timecreated:
+            (json['timecreated'] == null) ? 'مشخص نشده' : json['timecreated'],
+        assignedTo: (json['assignedToUser'] == null)
+            ? 'مشخص نشده'
+            : json['assignedToUser'],
+        priority: (json['priority'] == null) ? 1 : json['priority'],
+        woStatus: (json['woStatus'] == null) ? 1 : json['woStatus']);
   }
 }
 
@@ -87,7 +111,7 @@ class WorkOrderListView extends StatelessWidget {
   final List<IconData> icons;
   Future<List<Job>> _fetchJobs() async {
     final response =
-        await http.get(Uri.parse('http://192.168.1.51:8000/api/v1/wos/'));
+        await http.get(Uri.parse('http://192.168.2.175:8000/api/v1/wos/'));
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(utf8.decode(response.bodyBytes));

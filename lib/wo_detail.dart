@@ -47,7 +47,7 @@ class WoDetail extends StatefulWidget {
 
 Future<Job> fetchAlbum(int id) async {
   final response = await http
-      .get(Uri.parse('http://192.168.1.51:8000/api/v1/wos_detail/$id'));
+      .get(Uri.parse('http://192.168.2.175:8000/api/v1/wos_detail/$id'));
 
   print(id);
   if (response.statusCode == 200) {
@@ -71,14 +71,22 @@ class _WoDetailState extends State<WoDetail>
   }
 
   var items = [
-    'Apple',
-    'Banana',
-    'Grapes',
-    'Orange',
-    'watermelon',
-    'Pineapple'
+    '',
+    'درخواست شده',
+    'متوقف',
+    'درفت',
+    'تخصیص داده شده',
+    'باز',
+    'در حال پیشرفت',
+    'بسته شده کامل',
+    'بسته شده ناقص',
+    'در انتظار قطعه',
   ];
-  String dropdownvalue = 'Apple';
+  String selectText(int index) {
+    return 'درخواست شده';
+  }
+
+  String dropdownvalue = '';
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -88,34 +96,73 @@ class _WoDetailState extends State<WoDetail>
             future: futureAlbum,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    // mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      DropdownButton(
-                        value: dropdownvalue,
-                        icon: Icon(Icons.keyboard_arrow_down),
-                        items: items.map((String items) {
-                          return DropdownMenuItem(
-                              value: items, child: Text(items));
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            dropdownvalue = newValue!;
-                          });
-                        },
+                return new Scaffold(
+                  body: new Column(
+                    children: <Widget>[
+                      new ListTile(
+                        leading: const Icon(Icons.phone),
+                        title: DropdownButton<String>(
+                          value: items[snapshot.data!.woStatus],
+                          icon: const Icon(Icons.arrow_downward),
+                          iconSize: 24,
+                          elevation: 16,
+                          style: const TextStyle(color: Colors.deepPurple),
+                          underline: Container(
+                            height: 2,
+                            color: Colors.deepPurpleAccent,
+                          ),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              dropdownvalue = newValue!;
+                            });
+                          },
+                          items: items
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
                       ),
-                      SizedBox(
-                        height: 20.0,
+                      new ListTile(
+                        leading: const Icon(Icons.phone),
+                        title: new Text(snapshot.data!.datecreated +
+                            ' ,' +
+                            snapshot.data!.timecreated.substring(0, 8)),
+                        subtitle: const Text('زمان ایجاد'),
                       ),
-                      Text(snapshot.data!.position),
-
-                      Text(snapshot.data!.id.toString()),
-                      Text(snapshot.data!.description),
-                      Text(snapshot.data!.company),
-                      // Text(snapshot.data!.position),
+                      new ListTile(
+                        leading: const Icon(Icons.person),
+                        title: Text(snapshot.data!.description),
+                        subtitle: const Text('دستورالعمل'),
+                      ),
+                      new ListTile(
+                        leading: const Icon(Icons.phone),
+                        title: new Text(snapshot.data!.priority.toString()),
+                        subtitle: const Text('اولویت'),
+                      ),
+                      new ListTile(
+                          leading: const Icon(Icons.email),
+                          title: new Text(snapshot.data!.maintenanceType)),
+                      const Divider(
+                        height: 1.0,
+                      ),
+                      new ListTile(
+                        leading: const Icon(Icons.label),
+                        title: Text(snapshot.data!.assignedTo),
+                        subtitle: const Text('None'),
+                      ),
+                      new ListTile(
+                        leading: const Icon(Icons.today),
+                        title: const Text('Birthday'),
+                        subtitle: const Text('February 20, 1980'),
+                      ),
+                      new ListTile(
+                        leading: const Icon(Icons.location_history),
+                        title: Text(snapshot.data!.company),
+                        subtitle: const Text('Not specified'),
+                      )
                     ],
                   ),
                 );
