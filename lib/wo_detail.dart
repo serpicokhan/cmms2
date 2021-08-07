@@ -151,12 +151,12 @@ class _WoDetailState extends State<WoDetail>
                       new ListTile(
                         leading: const Icon(Icons.label),
                         title: Text(snapshot.data!.assignedTo),
-                        subtitle: const Text('None'),
+                        subtitle: const Text('کاربر اختصاص داده شده'),
                       ),
                       new ListTile(
                         leading: const Icon(Icons.today),
-                        title: const Text('Birthday'),
-                        subtitle: const Text('February 20, 1980'),
+                        title: Text(snapshot.data!.reqUser),
+                        subtitle: const Text('کاربر درخواست کننده'),
                       ),
                       new ListTile(
                         leading: const Icon(Icons.location_history),

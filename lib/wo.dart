@@ -45,6 +45,7 @@ class Job {
   final String timecreated;
   final String maintenanceType;
   final String assignedTo;
+  final String reqUser;
 
   Job(
       {required this.id,
@@ -57,6 +58,7 @@ class Job {
       required this.maintenanceType,
       required this.color,
       required this.assignedTo,
+      required this.reqUser,
       required this.priority});
 
   factory Job.fromJson(Map<String, dynamic> json) {
@@ -76,6 +78,9 @@ class Job {
         assignedTo: (json['assignedToUser'] == null)
             ? 'مشخص نشده'
             : json['assignedToUser'],
+        reqUser: (json['RequestedUser'] == null)
+            ? 'مشخص نشده'
+            : json['RequestedUser'],
         priority: (json['priority'] == null) ? 1 : json['priority'],
         woStatus: (json['woStatus'] == null) ? 1 : json['woStatus']);
   }
