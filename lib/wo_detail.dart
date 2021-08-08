@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'glob.dart';
+
 class TabBarWorkOrder extends StatelessWidget {
   const TabBarWorkOrder({Key? key, required this.id2}) : super(key: key);
   final int id2;
@@ -47,7 +49,7 @@ class WoDetail extends StatefulWidget {
 
 Future<Job> fetchAlbum(int id) async {
   final response = await http
-      .get(Uri.parse('http://192.168.2.175:8000/api/v1/wos_detail/$id'));
+      .get(Uri.parse('http://172.17.153.145:8000/api/v1/wos_detail/$id'));
 
   print(id);
   if (response.statusCode == 200) {
@@ -82,6 +84,7 @@ class _WoDetailState extends State<WoDetail>
     'بسته شده ناقص',
     'در انتظار قطعه',
   ];
+  
   String selectText(int index) {
     return 'درخواست شده';
   }
@@ -139,12 +142,12 @@ class _WoDetailState extends State<WoDetail>
                       ),
                       new ListTile(
                         leading: const Icon(Icons.phone),
-                        title: new Text(snapshot.data!.priority.toString()),
+                        title: new Text(ServerStatus.priority[snapshot.data!.priority]),
                         subtitle: const Text('اولویت'),
                       ),
                       new ListTile(
                           leading: const Icon(Icons.email),
-                          title: new Text(snapshot.data!.maintenanceType)),
+                          title: new Text(snapshot.data!.maintenanceType.toString())),
                       const Divider(
                         height: 1.0,
                       ),
@@ -162,7 +165,68 @@ class _WoDetailState extends State<WoDetail>
                         leading: const Icon(Icons.location_history),
                         title: Text(snapshot.data!.company),
                         subtitle: const Text('Not specified'),
-                      )
+                      ),
+                      new ListTile(
+                        leading: const Icon(Icons.ac_unit_outlined),
+                        title:FutureBuilder<List<MaintenanceType>>(
+                          future: fetchMaintenaceType(),
+                          builder: (context,snapshot2){
+                            if (snapshot2.hasData) {
+                              return DropdownButton<String>(
+                                                  value: snapshot2.data?[snapshot.data!.maintenanceType.id].name,
+                                                  icon: const Icon(Icons.arrow_downward),
+                                                  iconSize: 24,
+                                                  elevation: 16,
+                                                  style: const TextStyle(color: Colors.deepPurple),
+                                                  underline: Container(
+                                                    height: 2,
+                                                    color: Colors.deepPurpleAccent,
+                                                  ),
+                                                  onChanged: (String? newValue) {
+                                                    setState(() {
+                                                      dropdownvalue = newValue!;
+                            });
+                          },
+                          items: snapshot2.data!
+                              .map((MaintenanceType value) {
+                            return DropdownMenuItem<String>(
+                              value: value.name,
+                              child: Text(value.name),
+                            );
+                          }).toList(),
+                       );
+                            }
+                            else if (snapshot2.hasError) {
+                              return Text('${snapshot2.error}');
+                             }
+                           return const CircularProgressIndicator();
+                          },
+                          
+                        )
+
+                      ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     ],
                   ),
                 );
