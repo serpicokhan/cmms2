@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'glob.dart';
+import 'tasklist.dart';
 
 class TabBarWorkOrder extends StatelessWidget {
   const TabBarWorkOrder({Key? key, required this.id2}) : super(key: key);
@@ -29,7 +30,7 @@ class TabBarWorkOrder extends StatelessWidget {
           body: TabBarView(
             children: [
               WoDetail(id: id2),
-              Icon(Icons.directions_transit),
+              ListViewTask(id: id2),
               Icon(Icons.directions_bike),
             ],
           ),

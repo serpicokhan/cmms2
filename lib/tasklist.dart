@@ -8,8 +8,8 @@ import 'dart:convert';
 import 'wo_detail.dart';
 
 class ListViewTask extends StatefulWidget {
-  const ListViewTask({Key? key, required this.id}) : super(key: key);
   final int id;
+  const ListViewTask({Key? key, required this.id}) : super(key: key);
   @override
   _ListViewTaskState createState() => _ListViewTaskState();
 }
@@ -30,7 +30,7 @@ class _ListViewTaskState extends State<ListViewTask>
 
   @override
   Widget build(BuildContext context) {
-    return TaskListView(titles: titles, subtitles: subtitles, icons: icons);
+    return TaskListView(id: widget.id);
   }
 }
 
@@ -100,21 +100,18 @@ class Task {
 class TaskListView extends StatelessWidget {
   const TaskListView({
     Key? key,
-    required this.titles,
-    required this.subtitles,
-    required this.icons,
+    required this.id,
   }) : super(key: key);
 
-  final List<String> titles;
-  final List<String> subtitles;
-  final List<IconData> icons;
+  final int id;
+
   Future<List<Task>> _fetchTask(id) async {
     final response = await http
         .get(Uri.parse(ServerStatus.ServerAddress + '/api/v1/Tasks/$id'));
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(utf8.decode(response.bodyBytes));
-      return jsonResponse.map((Task) => new Job.fromJson(Task)).toList();
+      return jsonResponse.map((task) => new Task.fromJson(task)).toList();
     } else {
       throw Exception('Failed to load jobs from API');
     }
@@ -123,7 +120,7 @@ class TaskListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Task>>(
-      future: _fetchTask(widget.id),
+      future: _fetchTask(this.id),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<Task>? data = snapshot.data;
@@ -152,13 +149,13 @@ class TaskListView extends StatelessWidget {
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => TabBarWorkOrder(
-                        id2: index.id,
-                      )),
-            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //       builder: (context) => TabBarWorkOrder(
+            //             id2: index.id,
+            //           )),
+            // );
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -166,7 +163,7 @@ class TaskListView extends StatelessWidget {
                 title: Text(index.taskDescription),
                 subtitle: Text(index.taskDescription),
                 leading: CircleAvatar(backgroundColor: Colors.green[200]),
-                trailing: Icon(icons[0])),
+                trailing: Icon(Icons.ac_unit)),
           ),
         ));
   }
