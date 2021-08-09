@@ -1,11 +1,10 @@
 import 'package:cmms2/glob.dart';
-import 'package:flutter/scheduler.dart';
+
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
-import 'newpage.dart';
 import 'wo_detail.dart';
 
 class ListViewHome extends StatefulWidget {
@@ -41,7 +40,7 @@ class Job {
   final String position;
   final String company;
   final String description;
-  
+
   final String datecreated;
   final String timecreated;
   final MaintenanceType maintenanceType;
@@ -57,23 +56,24 @@ class Job {
       required this.timecreated,
       required this.woStatus,
       required this.maintenanceType,
-     
       required this.assignedTo,
       required this.reqUser,
       required this.priority});
 
   factory Job.fromJson(Map<String, dynamic> json) {
-    
-    Job jb= Job(
+    Job jb = Job(
         id: json['id'],
         position: json['summaryofIssue'],
         company: json['woAsset'],
-        description:
-            (json['workInstructions'] == null) ? 'ندارد' : json['workInstructions'],
+        description: (json['workInstructions'] == null)
+            ? 'ندارد'
+            : json['workInstructions'],
         // maintenanceType:
         //     (json['maintenanceType'] == null) ? 1 : json['maintenanceType'],
         // color:  (json['color'] == null) ? '#ccc5c3' : json['color'],
-        maintenanceType:  (json['maintenanceType'] == null) ? new MaintenanceType(id: 1, color: '#ffffff', name: 'خراب') : MaintenanceType.fromJson(json['maintenanceType']),
+        maintenanceType: (json['maintenanceType'] == null)
+            ? new MaintenanceType(id: 1, color: '#ffffff', name: 'خراب')
+            : MaintenanceType.fromJson(json['maintenanceType']),
         datecreated:
             (json['datecreated'] == null) ? 'مشخص نشده' : json['datecreated'],
         timecreated:
@@ -86,8 +86,8 @@ class Job {
             : json['RequestedUser'],
         priority: (json['woPriority'] == null) ? 1 : json['woPriority'],
         woStatus: (json['woStatus'] == null) ? 1 : json['woStatus']);
-        // print(jb.maintenanceType);
-        return jb;
+    // print(jb.maintenanceType);
+    return jb;
   }
 }
 
@@ -121,7 +121,7 @@ class WorkOrderListView extends StatelessWidget {
   final List<IconData> icons;
   Future<List<Job>> _fetchJobs() async {
     final response =
-        await http.get(Uri.parse('http://172.17.153.145:8000/api/v1/wos/'));
+        await http.get(Uri.parse('http://192.168.1.52:8000/api/v1/wos/'));
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(utf8.decode(response.bodyBytes));
@@ -176,7 +176,9 @@ class WorkOrderListView extends StatelessWidget {
             child: ListTile(
                 title: Text(index.position),
                 subtitle: Text(index.position),
-                leading: CircleAvatar(backgroundColor:HexColor.fromHex(index.maintenanceType.color)),
+                leading: CircleAvatar(
+                    backgroundColor:
+                        HexColor.fromHex(index.maintenanceType.color)),
                 trailing: Icon(icons[0])),
           ),
         ));

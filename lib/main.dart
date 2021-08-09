@@ -1,11 +1,14 @@
 // import 'workorder.dart';
 
+import 'package:cmms2/glob.dart';
 import 'package:flutter/material.dart';
 
 import 'with_tabs.dart';
 
 void main() {
   runApp(App());
+  ServerStatus.init();
+  print(ServerStatus.maintenanceType);
 }
 
 class App extends StatefulWidget {

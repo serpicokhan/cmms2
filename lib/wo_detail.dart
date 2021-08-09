@@ -47,9 +47,9 @@ class WoDetail extends StatefulWidget {
   _WoDetailState createState() => _WoDetailState();
 }
 
-Future<Job> fetchAlbum(int id) async {
+Future<Job> fetchWo(int id) async {
   final response = await http
-      .get(Uri.parse('http://172.17.153.145:8000/api/v1/wos_detail/$id'));
+      .get(Uri.parse('http://192.168.1.52:8000/api/v1/wos_detail/$id'));
 
   print(id);
   if (response.statusCode == 200) {
@@ -69,7 +69,7 @@ class _WoDetailState extends State<WoDetail>
   @override
   void initState() {
     super.initState();
-    futureAlbum = fetchAlbum(widget.id);
+    futureAlbum = fetchWo(widget.id);
   }
 
   var items = [
@@ -84,12 +84,13 @@ class _WoDetailState extends State<WoDetail>
     'بسته شده ناقص',
     'در انتظار قطعه',
   ];
-  
+
   String selectText(int index) {
     return 'درخواست شده';
   }
 
   String dropdownvalue = '';
+  String dropdownvalue2 = '';
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -106,7 +107,7 @@ class _WoDetailState extends State<WoDetail>
                         leading: const Icon(Icons.phone),
                         title: DropdownButton<String>(
                           value: items[snapshot.data!.woStatus],
-                          icon: const Icon(Icons.arrow_downward),
+                          // icon: const Icon(Icons.arrow_downward),
                           iconSize: 24,
                           elevation: 16,
                           style: const TextStyle(color: Colors.deepPurple),
@@ -142,12 +143,13 @@ class _WoDetailState extends State<WoDetail>
                       ),
                       new ListTile(
                         leading: const Icon(Icons.phone),
-                        title: new Text(ServerStatus.priority[snapshot.data!.priority]),
+                        title: new Text(
+                            ServerStatus.priority[snapshot.data!.priority]),
                         subtitle: const Text('اولویت'),
                       ),
                       new ListTile(
                           leading: const Icon(Icons.email),
-                          title: new Text(snapshot.data!.maintenanceType.toString())),
+                          title: new Text(snapshot.data!.maintenanceType.name)),
                       const Divider(
                         height: 1.0,
                       ),
@@ -167,66 +169,30 @@ class _WoDetailState extends State<WoDetail>
                         subtitle: const Text('Not specified'),
                       ),
                       new ListTile(
-                        leading: const Icon(Icons.ac_unit_outlined),
-                        title:FutureBuilder<List<MaintenanceType>>(
-                          future: fetchMaintenaceType(),
-                          builder: (context,snapshot2){
-                            if (snapshot2.hasData) {
-                              return DropdownButton<String>(
-                                                  value: snapshot2.data?[snapshot.data!.maintenanceType.id].name,
-                                                  icon: const Icon(Icons.arrow_downward),
-                                                  iconSize: 24,
-                                                  elevation: 16,
-                                                  style: const TextStyle(color: Colors.deepPurple),
-                                                  underline: Container(
-                                                    height: 2,
-                                                    color: Colors.deepPurpleAccent,
-                                                  ),
-                                                  onChanged: (String? newValue) {
-                                                    setState(() {
-                                                      dropdownvalue = newValue!;
+                        leading: const Icon(Icons.phone),
+                        title: DropdownButton<String>(
+                          value: snapshot.data!.maintenanceType.name,
+                          // icon: const Icon(Icons.arrow_downward),
+                          iconSize: 24,
+                          elevation: 16,
+                          style: const TextStyle(color: Colors.deepPurple),
+                          underline: Container(
+                            height: 2,
+                            color: Colors.deepPurpleAccent,
+                          ),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              dropdownvalue2 = newValue!;
                             });
                           },
-                          items: snapshot2.data!
-                              .map((MaintenanceType value) {
+                          items: ServerStatus.maintenanceType
+                              .map<DropdownMenuItem<String>>(
+                                  (MaintenanceType value) {
                             return DropdownMenuItem<String>(
-                              value: value.name,
-                              child: Text(value.name),
-                            );
+                                value: value.name, child: Text(value.name));
                           }).toList(),
-                       );
-                            }
-                            else if (snapshot2.hasError) {
-                              return Text('${snapshot2.error}');
-                             }
-                           return const CircularProgressIndicator();
-                          },
-                          
-                        )
-
+                        ),
                       ),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     ],
                   ),
                 );

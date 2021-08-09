@@ -1,0 +1,173 @@
+import 'package:cmms2/glob.dart';
+
+import 'package:http/http.dart' as http;
+
+import 'package:flutter/material.dart';
+import 'dart:convert';
+
+import 'wo_detail.dart';
+
+class ListViewTask extends StatefulWidget {
+  const ListViewTask({Key? key, required this.id}) : super(key: key);
+  final int id;
+  @override
+  _ListViewTaskState createState() => _ListViewTaskState();
+}
+
+class _ListViewTaskState extends State<ListViewTask>
+    with AutomaticKeepAliveClientMixin<ListViewTask> {
+  @override
+  bool get wantKeepAlive => true;
+  final titles = ["List 1", "List 2", "List 3"];
+
+  final subtitles = [
+    "Here is list 1 subtitle",
+    "Here is list 2 subtitle",
+    "Here is list 3 subtitle"
+  ];
+
+  final icons = [Icons.ac_unit, Icons.access_alarm, Icons.access_time];
+
+  @override
+  Widget build(BuildContext context) {
+    return TaskListView(titles: titles, subtitles: subtitles, icons: icons);
+  }
+}
+
+class Task {
+  final int id;
+  final int taskTypes;
+  // final int taskMetrics;
+  final String taskDescription;
+  final String taskAssignedToUser;
+  final String taskStartDate;
+
+  final String taskStartTime;
+  final String taskTimeEstimate;
+  final String taskDateCompleted;
+  final String taskTimeCompleted;
+  final String taskTimeSpent;
+  final int workOrder;
+
+  Task(
+      {required this.id,
+      required this.taskTypes,
+      // required this.taskMetrics,
+      required this.taskDescription,
+      required this.taskAssignedToUser,
+      required this.taskStartDate,
+      required this.taskStartTime,
+      required this.taskTimeEstimate,
+      required this.taskDateCompleted,
+      required this.taskTimeCompleted,
+      required this.workOrder,
+      required this.taskTimeSpent});
+
+  factory Task.fromJson(Map<String, dynamic> json) {
+    Task jb = Task(
+        id: json['id'],
+        taskAssignedToUser: json['taskAssignedToUser'],
+        taskDateCompleted: (json['taskDateCompleted'] == null)
+            ? 'ندارد'
+            : json['taskDateCompleted'],
+        taskDescription: (json['taskDescription'] == null)
+            ? 'ندارد'
+            : json['taskDescription'],
+        // taskMetrics:
+        //     (json['taskMetrics'] == null) ? 'ندارد' : json['taskMetrics'],
+        taskStartDate: (json['taskStartDate'] == null)
+            ? 'مشخص نشده'
+            : json['taskStartDate'],
+        taskStartTime: (json['taskStartTime'] == null)
+            ? 'مشخص نشده'
+            : json['taskStartTime'],
+        taskTimeCompleted: (json['taskTimeCompleted'] == null)
+            ? 'مشخص نشده'
+            : json['taskTimeCompleted'],
+        taskTimeEstimate: (json['taskTimeEstimate'] == null)
+            ? 'مشخص نشده'
+            : json['taskTimeEstimate'],
+        taskTimeSpent: (json['taskTimeSpent'] == null)
+            ? "مشخص نشده"
+            : json['taskTimeSpent'],
+        workOrder: (json['workOrder'] == null) ? 1 : json['workOrder'],
+        taskTypes: (json['taskTypes'] == null) ? 1 : json['taskTypes']);
+    // print(jb.maintenanceType);
+    return jb;
+  }
+}
+
+class TaskListView extends StatelessWidget {
+  const TaskListView({
+    Key? key,
+    required this.titles,
+    required this.subtitles,
+    required this.icons,
+  }) : super(key: key);
+
+  final List<String> titles;
+  final List<String> subtitles;
+  final List<IconData> icons;
+  Future<List<Task>> _fetchTask(id) async {
+    final response = await http
+        .get(Uri.parse(ServerStatus.ServerAddress + '/api/v1/Tasks/$id'));
+
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(utf8.decode(response.bodyBytes));
+      return jsonResponse.map((Task) => new Job.fromJson(Task)).toList();
+    } else {
+      throw Exception('Failed to load jobs from API');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Task>>(
+      future: _fetchTask(widget.id),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<Task>? data = snapshot.data;
+          return newMethod2(data);
+        } else if (snapshot.hasError) {
+          return Text("${snapshot.error}");
+        }
+        return CircularProgressIndicator();
+      },
+    );
+    // return newMethod2();
+  }
+
+  ListView newMethod2(data) {
+    return ListView.builder(
+        // itemCount: titles.length,
+        itemBuilder: (context, index) {
+      return newMethod(context, data[index]);
+    });
+  }
+
+  Card newMethod(dynamic context, Task index) {
+    return new Card(
+        margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
+        elevation: 10.0,
+        child: InkWell(
+          splashColor: Colors.blue.withAlpha(30),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TabBarWorkOrder(
+                        id2: index.id,
+                      )),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListTile(
+                title: Text(index.taskDescription),
+                subtitle: Text(index.taskDescription),
+                leading: CircleAvatar(backgroundColor: Colors.green[200]),
+                trailing: Icon(icons[0])),
+          ),
+        ));
+  }
+}
