@@ -121,7 +121,7 @@ class WorkOrderListView extends StatelessWidget {
   final List<IconData> icons;
   Future<List<Job>> _fetchJobs() async {
     final response =
-        await http.get(Uri.parse('http://192.168.1.52:8000/api/v1/wos/'));
+        await http.get(Uri.parse('http://192.168.2.175:8000/api/v1/wos/'));
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(utf8.decode(response.bodyBytes));
@@ -150,10 +150,11 @@ class WorkOrderListView extends StatelessWidget {
 
   ListView newMethod2(data) {
     return ListView.builder(
-        // itemCount: titles.length,
+        itemCount: data.length,
         itemBuilder: (context, index) {
-      return newMethod(context, data[index], data[index].maintenanceType.color);
-    });
+          return newMethod(
+              context, data[index], data[index].maintenanceType.color);
+        });
   }
 
   Card newMethod(dynamic context, Job index, String color) {

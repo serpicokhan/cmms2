@@ -50,7 +50,7 @@ class WoDetail extends StatefulWidget {
 
 Future<Job> fetchWo(int id) async {
   final response = await http
-      .get(Uri.parse('http://192.168.1.52:8000/api/v1/wos_detail/$id'));
+      .get(Uri.parse('http://192.168.2.175:8000/api/v1/wos_detail/$id'));
 
   print(id);
   if (response.statusCode == 200) {
