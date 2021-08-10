@@ -38,12 +38,12 @@ class Stock {
               partModel: "1",
               partName: "بدون نام",
               partNotes: "1232"),
-      qtyOnHand: json['qtyOnHand'],
-      minQty: json['minQty'],
-      aisle: json['aisle'],
-      row: json['row'],
-      bin: json['bin'],
-      location: json['location'],
+      qtyOnHand: (json['qtyOnHand'] == null) ? 0 : json['qtyOnHand'],
+      minQty: (json['minQty'] == null) ? 0 : json['minQty'],
+      aisle: (json['aisle'] == null) ? 0 : json['aisle'],
+      row: (json['row'] == null) ? 0 : json['row'],
+      bin: (json['bin'] == null) ? 0 : json['bin'],
+      location: (json['location'] == null) ? 0 : json['location'],
     );
   }
 

@@ -13,8 +13,8 @@ class WorkorderPartDetail extends StatefulWidget {
 }
 
 Future<WorkorderPart> fetchWorkorderPart(int id) async {
-  final response = await http
-      .get(Uri.parse('http://192.168.1.50:8000/api/v1/WorkorderPart/$id/'));
+  final response =
+      await http.get(Uri.parse('http://192.168.1.50:8000/api/v1/WoPart/$id/'));
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
@@ -45,9 +45,11 @@ class _WorkorderPartDetailState extends State<WorkorderPartDetail>
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
-          title: Text('جزییات فعالیت'),
+          title: Text('جزییات قطعات مصرفی'),
         ),
         body: Center(
           child: FutureBuilder<WorkorderPart>(

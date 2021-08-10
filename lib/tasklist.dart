@@ -1,5 +1,4 @@
-import 'package:cmms2/glob.dart';
-
+import 'package:cmms2/task_detail.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
@@ -41,10 +40,10 @@ class Task {
   final String taskStartDate;
 
   final String taskStartTime;
-  final String taskTimeEstimate;
+  final double taskTimeEstimate;
   final String taskDateCompleted;
   final String taskTimeCompleted;
-  final String taskTimeSpent;
+  final double taskTimeSpent;
   final int workOrder;
 
   Task(
@@ -82,12 +81,10 @@ class Task {
         taskTimeCompleted: (json['taskTimeCompleted'] == null)
             ? 'مشخص نشده'
             : json['taskTimeCompleted'],
-        taskTimeEstimate: (json['taskTimeEstimate'] == null)
-            ? 'مشخص نشده'
-            : json['taskTimeEstimate'],
-        taskTimeSpent: (json['taskTimeSpent'] == null)
-            ? "مشخص نشده"
-            : json['taskTimeSpent'],
+        taskTimeEstimate:
+            (json['taskTimeEstimate'] == null) ? 0 : json['taskTimeEstimate'],
+        taskTimeSpent:
+            (json['taskTimeSpent'] == null) ? 0 : json['taskTimeSpent'],
         workOrder: (json['workOrder'] == null) ? 1 : json['workOrder'],
         taskTypes: (json['taskTypes'] == null) ? 1 : json['taskTypes']);
     // print(jb.maintenanceType);
@@ -104,8 +101,8 @@ class TaskListView extends StatelessWidget {
   final int id;
 
   Future<List<Task>> _fetchTask(id) async {
-    final response = await http
-        .get(Uri.parse(ServerStatus.ServerAddress + '/api/v1/Tasks/$id'));
+    final response =
+        await http.get(Uri.parse('http://192.168.1.50:8000/api/v1/Tasks/$id/'));
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(utf8.decode(response.bodyBytes));
@@ -134,10 +131,10 @@ class TaskListView extends StatelessWidget {
 
   ListView newMethod2(data) {
     return ListView.builder(
-        // itemCount: titles.length,
+        itemCount: data.length,
         itemBuilder: (context, index) {
-      return newMethod(context, data[index]);
-    });
+          return newMethod(context, data[index]);
+        });
   }
 
   Card newMethod(dynamic context, Task index) {
@@ -147,13 +144,10 @@ class TaskListView extends StatelessWidget {
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) => TabBarWorkOrder(
-            //             id2: index.id,
-            //           )),
-            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => TaskDetail(id: index.id)),
+            );
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),

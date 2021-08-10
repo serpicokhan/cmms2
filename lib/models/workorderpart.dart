@@ -5,8 +5,8 @@ import 'part.dart';
 class WorkorderPart {
   int id;
   Stock woPartStock;
-  int woPartPlannedQnty;
-  int woPartActulaQnty;
+  double woPartPlannedQnty;
+  double woPartActulaQnty;
   String timeStamp;
   int woPartWorkorder;
 
@@ -44,10 +44,13 @@ class WorkorderPart {
                   partModel: "1",
                   partName: "بدون نام",
                   partNotes: "1232")),
-      woPartPlannedQnty: json['woPartPlannedQnty'],
-      woPartActulaQnty: json['woPartActulaQnty'],
-      timeStamp: json['timeStamp'],
-      woPartWorkorder: json['woPartWorkorder'],
+      woPartPlannedQnty:
+          (json['woPartPlannedQnty'] == null) ? 0 : json['woPartPlannedQnty'],
+      woPartActulaQnty:
+          (json['woPartActulaQnty'] == null) ? 0 : json['woPartActulaQnty'],
+      timeStamp: (json['timeStamp'] == null) ? 'مشخص نشده' : json['timeStamp'],
+      woPartWorkorder:
+          (json['woPartWorkorder'] == null) ? 0 : json['woPartWorkorder'],
     );
   }
 

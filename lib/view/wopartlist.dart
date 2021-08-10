@@ -1,5 +1,6 @@
 import 'package:cmms2/glob.dart';
 import 'package:cmms2/models/workorderpart.dart';
+import 'package:cmms2/view/wopart_detail.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -43,7 +44,7 @@ class WorkorderPartListView extends StatelessWidget {
 
   Future<List<WorkorderPart>> _fetchwoPart(id) async {
     final response = await http
-        .get(Uri.parse(ServerStatus.ServerAddress + '/api/v1/WoParts/$id'));
+        .get(Uri.parse('http://192.168.1.50:8000/api/v1/WoParts/$id/'));
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(utf8.decode(response.bodyBytes));
@@ -74,10 +75,10 @@ class WorkorderPartListView extends StatelessWidget {
 
   ListView newMethod2(data) {
     return ListView.builder(
-        // itemCount: titles.length,
+        itemCount: data.length,
         itemBuilder: (context, index) {
-      return newMethod(context, data[index]);
-    });
+          return newMethod(context, data[index]);
+        });
   }
 
   Card newMethod(dynamic context, WorkorderPart index) {
@@ -87,13 +88,11 @@ class WorkorderPartListView extends StatelessWidget {
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) => TabBarWorkOrder(
-            //             id2: index.id,
-            //           )),
-            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => WorkorderPartDetail(id: index.id)),
+            );
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),

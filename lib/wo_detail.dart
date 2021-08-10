@@ -32,7 +32,7 @@ class TabBarWorkOrder extends StatelessWidget {
             children: [
               WoDetail(id: id2),
               ListViewTask(id: id2),
-              ListViewWorkorderPart(id: id2),
+              ListViewWorkorderPart(id: id2)
             ],
           ),
         ),
