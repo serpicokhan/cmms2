@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cmms2/view/wopartlist.dart';
 import 'package:cmms2/wo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class TabBarWorkOrder extends StatelessWidget {
             children: [
               WoDetail(id: id2),
               ListViewTask(id: id2),
-              Icon(Icons.directions_bike),
+              ListViewWorkorderPart(id: id2),
             ],
           ),
         ),
@@ -50,9 +51,8 @@ class WoDetail extends StatefulWidget {
 
 Future<Job> fetchWo(int id) async {
   final response = await http
-      .get(Uri.parse('http://192.168.2.175:8000/api/v1/wos_detail/$id'));
+      .get(Uri.parse('http://192.168.1.50:8000/api/v1/wos_detail/$id'));
 
-  print(id);
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.

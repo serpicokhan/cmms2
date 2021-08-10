@@ -15,7 +15,7 @@ class TaskDetail extends StatefulWidget {
 
 Future<Task> fetchTask(int id) async {
   final response =
-      await http.get(Uri.parse('http://192.168.2.175:8000/api/v1/Task/$id/'));
+      await http.get(Uri.parse('http://192.168.1.50:8000/api/v1/Task/$id/'));
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
@@ -50,6 +50,10 @@ class _TaskDetailState extends State<TaskDetail>
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {},
+          ),
           title: Text('جزییات فعالیت'),
         ),
         body: Center(

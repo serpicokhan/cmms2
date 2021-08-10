@@ -1,5 +1,4 @@
 import 'package:cmms2/glob.dart';
-import 'package:cmms2/task_detail.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -36,22 +35,22 @@ class _ListViewTaskState extends State<ListViewTask>
 class Task {
   final int id;
   final int taskTypes;
-  final int taskMetrics;
+  // final int taskMetrics;
   final String taskDescription;
   final String taskAssignedToUser;
   final String taskStartDate;
 
   final String taskStartTime;
-  final double taskTimeEstimate;
+  final String taskTimeEstimate;
   final String taskDateCompleted;
   final String taskTimeCompleted;
-  final double taskTimeSpent;
+  final String taskTimeSpent;
   final int workOrder;
 
   Task(
       {required this.id,
       required this.taskTypes,
-      required this.taskMetrics,
+      // required this.taskMetrics,
       required this.taskDescription,
       required this.taskAssignedToUser,
       required this.taskStartDate,
@@ -63,13 +62,9 @@ class Task {
       required this.taskTimeSpent});
 
   factory Task.fromJson(Map<String, dynamic> json) {
-    print(json);
     Task jb = Task(
         id: json['id'],
-        taskAssignedToUser: (json['taskAssignedToUser'] == null)
-            ? 'ندارد'
-            : json['taskAssignedToUser'],
-        taskMetrics: (json['taskMetrics'] == null) ? 0 : json['taskMetrics'],
+        taskAssignedToUser: json['taskAssignedToUser'],
         taskDateCompleted: (json['taskDateCompleted'] == null)
             ? 'ندارد'
             : json['taskDateCompleted'],
@@ -87,10 +82,12 @@ class Task {
         taskTimeCompleted: (json['taskTimeCompleted'] == null)
             ? 'مشخص نشده'
             : json['taskTimeCompleted'],
-        taskTimeEstimate:
-            (json['taskTimeEstimate'] == null) ? 0.0 : json['taskTimeEstimate'],
-        taskTimeSpent:
-            (json['taskTimeSpent'] == null) ? 1.0 : json['taskTimeSpent'],
+        taskTimeEstimate: (json['taskTimeEstimate'] == null)
+            ? 'مشخص نشده'
+            : json['taskTimeEstimate'],
+        taskTimeSpent: (json['taskTimeSpent'] == null)
+            ? "مشخص نشده"
+            : json['taskTimeSpent'],
         workOrder: (json['workOrder'] == null) ? 1 : json['workOrder'],
         taskTypes: (json['taskTypes'] == null) ? 1 : json['taskTypes']);
     // print(jb.maintenanceType);
@@ -108,7 +105,7 @@ class TaskListView extends StatelessWidget {
 
   Future<List<Task>> _fetchTask(id) async {
     final response = await http
-        .get(Uri.parse('http://192.168.2.175:8000/api/v1/Tasks/$id/'));
+        .get(Uri.parse(ServerStatus.ServerAddress + '/api/v1/Tasks/$id'));
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(utf8.decode(response.bodyBytes));
@@ -137,10 +134,10 @@ class TaskListView extends StatelessWidget {
 
   ListView newMethod2(data) {
     return ListView.builder(
-        itemCount: data.length,
+        // itemCount: titles.length,
         itemBuilder: (context, index) {
-          return newMethod(context, data[index]);
-        });
+      return newMethod(context, data[index]);
+    });
   }
 
   Card newMethod(dynamic context, Task index) {
@@ -150,16 +147,19 @@ class TaskListView extends StatelessWidget {
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => TaskDetail(id: index.id)),
-            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //       builder: (context) => TabBarWorkOrder(
+            //             id2: index.id,
+            //           )),
+            // );
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListTile(
                 title: Text(index.taskDescription),
-                subtitle: Text(index.taskAssignedToUser),
+                subtitle: Text(index.taskDescription),
                 leading: CircleAvatar(backgroundColor: Colors.green[200]),
                 trailing: Icon(Icons.ac_unit)),
           ),
