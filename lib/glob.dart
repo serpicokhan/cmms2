@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 class ServerStatus {
   static int newestBinary = 20;
   static bool serverUp = false;
-  static const String ServerAddress = "192.168.1.50:8000";
+  static const String ServerAddress = "http://192.168.2.175:8000";
   static var priority = [
     '',
     'خیلی زیاد',
@@ -49,7 +49,7 @@ class MaintenanceType {
 Future<List<MaintenanceType>> fetchMaintenaceType() async {
   print("http://{$ServerStatus.ServerAddress}/v1/mt/");
   final response =
-      await http.get(Uri.parse("http://192.168.1.50:8000/api/v1/mt/"));
+      await http.get(Uri.parse("http://192.168.2.175:8000/api/v1/mt/"));
 
   if (response.statusCode == 200) {
     List jsonResponse = json.decode(utf8.decode(response.bodyBytes));

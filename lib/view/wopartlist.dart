@@ -44,7 +44,7 @@ class WorkorderPartListView extends StatelessWidget {
 
   Future<List<WorkorderPart>> _fetchwoPart(id) async {
     final response = await http
-        .get(Uri.parse('http://192.168.1.50:8000/api/v1/WoParts/$id/'));
+        .get(Uri.parse(ServerStatus.ServerAddress + '/api/v1/WoParts/$id/'));
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(utf8.decode(response.bodyBytes));

@@ -4,6 +4,8 @@ import 'package:cmms2/models/workorderpart.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../glob.dart';
+
 class WorkorderPartDetail extends StatefulWidget {
   const WorkorderPartDetail({Key? key, required this.id}) : super(key: key);
   final int id;
@@ -13,8 +15,8 @@ class WorkorderPartDetail extends StatefulWidget {
 }
 
 Future<WorkorderPart> fetchWorkorderPart(int id) async {
-  final response =
-      await http.get(Uri.parse('http://192.168.1.50:8000/api/v1/WoPart/$id/'));
+  final response = await http
+      .get(Uri.parse(ServerStatus.ServerAddress + '/api/v1/WoPart/$id/'));
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,

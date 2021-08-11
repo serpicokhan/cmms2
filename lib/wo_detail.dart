@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cmms2/view/wofilelist.dart';
 import 'package:cmms2/view/wopartlist.dart';
 import 'package:cmms2/wo.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,13 +17,14 @@ class TabBarWorkOrder extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: DefaultTabController(
-        length: 3,
+        length: 4,
         child: Scaffold(
           appBar: AppBar(
             bottom: const TabBar(
               tabs: [
                 Tab(icon: Icon(Icons.directions_car)),
                 Tab(icon: Icon(Icons.directions_transit)),
+                Tab(icon: Icon(Icons.directions_bike)),
                 Tab(icon: Icon(Icons.directions_bike)),
               ],
             ),
@@ -32,7 +34,8 @@ class TabBarWorkOrder extends StatelessWidget {
             children: [
               WoDetail(id: id2),
               ListViewTask(id: id2),
-              ListViewWorkorderPart(id: id2)
+              ListViewWorkorderPart(id: id2),
+              ListViewWorkorderFile(id: id2),
             ],
           ),
         ),
@@ -51,7 +54,7 @@ class WoDetail extends StatefulWidget {
 
 Future<Job> fetchWo(int id) async {
   final response = await http
-      .get(Uri.parse('http://192.168.1.50:8000/api/v1/wos_detail/$id'));
+      .get(Uri.parse(ServerStatus.ServerAddress + '/api/v1/wos_detail/$id'));
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'glob.dart';
 import 'tasklist.dart';
 
 class TaskDetail extends StatefulWidget {
@@ -14,8 +15,8 @@ class TaskDetail extends StatefulWidget {
 }
 
 Future<Task> fetchTask(int id) async {
-  final response =
-      await http.get(Uri.parse('http://192.168.1.50:8000/api/v1/Task/$id/'));
+  final response = await http
+      .get(Uri.parse(ServerStatus.ServerAddress + '/api/v1/Task/$id/'));
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,

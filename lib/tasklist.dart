@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
+import 'glob.dart';
+
 class ListViewTask extends StatefulWidget {
   final int id;
   const ListViewTask({Key? key, required this.id}) : super(key: key);
@@ -101,8 +103,8 @@ class TaskListView extends StatelessWidget {
   final int id;
 
   Future<List<Task>> _fetchTask(id) async {
-    final response =
-        await http.get(Uri.parse('http://192.168.1.50:8000/api/v1/Tasks/$id/'));
+    final response = await http
+        .get(Uri.parse(ServerStatus.ServerAddress + '/api/v1/Tasks/$id/'));
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(utf8.decode(response.bodyBytes));
