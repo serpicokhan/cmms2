@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cmms2/glob.dart';
 import 'package:cmms2/models/wofile.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -90,7 +91,17 @@ class WorkorderFileListView extends StatefulWidget {
 }
 
 class _WorkorderFileListViewState extends State<WorkorderFileListView> {
+  // late Directory appDocDir;
+  // Future<Directory?>? _appDocumentsDirectory;
+  late String dir;
+  Future<Directory> _requestAppDocumentsDirectory() async {
+    return getApplicationDocumentsDirectory();
+  }
+
   Future<List<WorkorderFile>> _fetchwoFile(id) async {
+    // appDocDir = await getApplicationDocumentsDirectory();
+    _requestAppDocumentsDirectory().then((value) => dir = value.path);
+
     final response = await http
         .get(Uri.parse(ServerStatus.ServerAddress + '/api/v1/WoFiles/$id/'));
 
@@ -130,12 +141,24 @@ class _WorkorderFileListViewState extends State<WorkorderFileListView> {
   }
 
   Card newMethod(dynamic context, WorkorderFile index) {
+    print(ServerStatus.ServerAddress + index.woFile);
+
     return new Card(
         margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
         elevation: 10.0,
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
-          onTap: () {},
+          onTap: () async {
+            final taskId = await FlutterDownloader.enqueue(
+              url: ServerStatus.ServerAddress + index.woFile,
+              savedDir: dir,
+              // 'the path of directory where you want to save downloaded files',
+              showNotification:
+                  true, // show download progress in status bar (for Android)
+              openFileFromNotification:
+                  true, // click on notification to open downloaded file (for Android)
+            );
+          },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListTile(
