@@ -1,6 +1,7 @@
 // import 'workorder.dart';
 
 import 'package:cmms2/glob.dart';
+import 'package:cmms2/view/asset.dart';
 import 'package:flutter/material.dart';
 
 import 'with_tabs.dart';
@@ -22,11 +23,7 @@ class _AppState extends State<App> {
   static List<Widget> _pages = <Widget>[
     // ListViewHome(),
     CallsPage(),
-    Center(
-        child: Icon(
-      Icons.camera,
-      size: 150,
-    )),
+    ListViewAsset(),
     Icon(
       Icons.chat,
       size: 150,
