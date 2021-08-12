@@ -59,6 +59,7 @@ class Asset {
       required this.assetMachineCategory});
 
   factory Asset.fromJson(Map<String, dynamic> json) {
+    print(json);
     return Asset(
         id: json['id'],
         assetIsPartOf: json['assetIsPartOf'] != null
@@ -76,12 +77,24 @@ class Asset {
                 description: 'description',
                 priority: 1,
                 isPartOf: 1),
-        assetTypes: json['assetTypes'] as int,
-        assetName: json['assetName'] as String,
-        assetDescription: json['assetDescription'] as String,
-        assetCode: json['assetCode'] as String,
-        assetAddress: json['assetAddress'] as String,
-        assetCity: json['assetCity'] as String,
+        assetTypes: json['assetIsPartOf'] != null
+            ? new Asset.fromJson(json['assetIsPartOf'])
+            : null,,
+        assetName: json['assetIsPartOf'] != null
+            ? new Asset.fromJson(json['assetIsPartOf'])
+            : null,,
+        assetDescription: json['assetIsPartOf'] != null
+            ? new Asset.fromJson(json['assetIsPartOf'])
+            : null,,
+        assetCode: json['assetIsPartOf'] != null
+            ? new Asset.fromJson(json['assetIsPartOf'])
+            : null,,
+        assetAddress: json['assetIsPartOf'] != null
+            ? new Asset.fromJson(json['assetIsPartOf'])
+            : null,
+        assetCity: json['assetIsPartOf'] != null
+            ? new Asset.fromJson(json['assetIsPartOf'])
+            : null,
         assetState: json['assetState'] as String,
         assetZipcode: json['assetZipcode'] as String,
         assetCountry: json['assetCountry'] as String,
