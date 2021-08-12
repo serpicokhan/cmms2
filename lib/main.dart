@@ -20,6 +20,8 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  List<String> titles = ['دستور کارها', 'دارایی ها و تجهیزات'];
+  String appbarTitle = 'دستور کار';
   static List<Widget> _pages = <Widget>[
     // ListViewHome(),
     CallsPage(),
@@ -37,7 +39,7 @@ class _AppState extends State<App> {
         title: 'Job Portal',
         home: Scaffold(
           appBar: AppBar(
-            title: Text('Experter'),
+            title: Text(appbarTitle),
           ),
           body: IndexedStack(
             index: _selectedIndex,
@@ -67,6 +69,7 @@ class _AppState extends State<App> {
   void _onItemTapped(int value) {
     setState(() {
       _selectedIndex = value;
+      appbarTitle = titles[value];
     });
   }
 }

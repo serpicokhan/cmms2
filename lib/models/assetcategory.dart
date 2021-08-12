@@ -4,24 +4,24 @@ class AssetCategory {
   String code;
   String description;
   int priority;
-  int isPartOf;
 
-  AssetCategory(
-      {required this.id,
-      required this.name,
-      required this.code,
-      required this.description,
-      required this.priority,
-      required this.isPartOf});
+  AssetCategory({
+    required this.id,
+    required this.name,
+    required this.code,
+    required this.description,
+    required this.priority,
+  });
 
   factory AssetCategory.fromJson(Map<String, dynamic> json) {
     return AssetCategory(
-        id: json['id'],
-        name: json['name'] as String,
-        code: json['code'] as String,
-        description: json['description'],
-        priority: json['priority'],
-        isPartOf: json['isPartOf'] as int);
+      id: json['id'],
+      name: (json['name'] == null) ? "نامشخص" : json["name"],
+      code: (json['code'] != null) ? json['code'] : "نامخشص",
+      description:
+          (json['description'] != null) ? json['description'] : "نامشخص",
+      priority: (json['priority'] != null) ? json["priority"] : 0,
+    );
   }
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -30,7 +30,6 @@ class AssetCategory {
     data['code'] = this.code;
     data['description'] = this.description;
     data['priority'] = this.priority;
-    data['isPartOf'] = this.isPartOf;
     return data;
   }
 }

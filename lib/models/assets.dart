@@ -7,15 +7,15 @@ class Asset {
   AssetCategory assetCategory;
   int assetTypes;
   String assetName;
-  String? assetDescription;
+  String assetDescription;
   String? assetCode;
-  String? assetAddress;
-  String? assetCity;
-  String? assetState;
-  String? assetZipcode;
-  String? assetCountry;
-  String? assetAccount;
-  String? assetChargeDepartment;
+  String assetAddress;
+  String assetCity;
+  String assetState;
+  String assetZipcode;
+  String assetCountry;
+  String assetAccount;
+  String assetChargeDepartment;
   String? assetNotes;
   String? assetBarcode;
   bool? assetHasPartOf;
@@ -59,7 +59,6 @@ class Asset {
       required this.assetMachineCategory});
 
   factory Asset.fromJson(Map<String, dynamic> json) {
-    print(json);
     return Asset(
         id: json['id'],
         assetIsPartOf: json['assetIsPartOf'] != null
@@ -76,42 +75,49 @@ class Asset {
                 code: 'code',
                 description: 'description',
                 priority: 1,
-                isPartOf: 1),
-        assetTypes: json['assetIsPartOf'] != null
-            ? new Asset.fromJson(json['assetIsPartOf'])
-            : null,,
-        assetName: json['assetIsPartOf'] != null
-            ? new Asset.fromJson(json['assetIsPartOf'])
-            : null,,
-        assetDescription: json['assetIsPartOf'] != null
-            ? new Asset.fromJson(json['assetIsPartOf'])
-            : null,,
-        assetCode: json['assetIsPartOf'] != null
-            ? new Asset.fromJson(json['assetIsPartOf'])
-            : null,,
-        assetAddress: json['assetIsPartOf'] != null
-            ? new Asset.fromJson(json['assetIsPartOf'])
-            : null,
-        assetCity: json['assetIsPartOf'] != null
-            ? new Asset.fromJson(json['assetIsPartOf'])
-            : null,
-        assetState: json['assetState'] as String,
-        assetZipcode: json['assetZipcode'] as String,
-        assetCountry: json['assetCountry'] as String,
-        assetAccount: json['assetAccount'] as String,
-        assetChargeDepartment: json['assetChargeDepartment'] as String,
-        assetNotes: json['assetNotes'] as String,
-        assetBarcode: json['assetBarcode'] as String,
-        assetHasPartOf: json['assetHasPartOf'] as bool,
-        assetAisel: json['assetAisel'] as int,
-        assetRow: json['assetRow'] as int?,
-        assetBin: json['assetBin'] as int?,
-        assetManufacture: json['assetManufacture'] as String?,
-        assetModel: json['assetModel'] as String?,
-        assetSerialNumber: json['assetSerialNumber'] as String?,
-        assetStatus: json['assetStatus'] as bool?,
-        assetIsStock: json['assetIsStock'] as bool?,
-        assetMachineCategory: json['assetMachineCategory'] as int?);
+              ),
+        assetTypes: json['assetTypes'] != null ? (json['assetTypes']) : 1,
+        assetName: json['assetName'] != null ? (json['assetName']) : 'نامشخص',
+        assetDescription: json['assetDescription'] != null
+            ? (json['assetDescription'])
+            : 'نامشخص',
+        assetCode: json['assetCode'] != null ? (json['assetCode']) : 'نامشخص',
+        assetAddress:
+            json['assetAddress'] != null ? (json['assetAddress']) : 'نامشخص',
+        assetCity: json['assetCity'] != null ? (json['assetCity']) : 'نامشخص',
+        assetState:
+            json['assetState'] != null ? (json['assetState']) : 'نامشخص',
+        assetZipcode:
+            json['assetZipcode'] != null ? (json['assetZipcode']) : 'نامشخص',
+        assetCountry:
+            json['assetCountry'] != null ? (json['assetCountry']) : 'نامشخص',
+        assetAccount:
+            json['assetAccount'] != null ? (json['assetAccount']) : 'نامشخص',
+        assetChargeDepartment: json['assetChargeDepartment'] != null
+            ? (json['assetChargeDepartment'])
+            : 'نامشخص',
+        assetNotes:
+            json['assetNotes'] != null ? (json['assetNotes']) : 'نامشخص',
+        assetBarcode:
+            json['assetBarcode'] != null ? (json['assetBarcode']) : 'نامشخص',
+        assetHasPartOf:
+            json['assetHasPartOf'] != null ? (json['assetHasPartOf']) : false,
+        assetAisel: json['assetAisel'] != null ? (json['assetAisel']) : 0,
+        assetRow: json['assetRow'] != null ? (json['assetRow']) : 0,
+        assetBin: json['assetBin'] != null ? (json['assetBin']) : 0,
+        assetManufacture: json['assetManufacture'] != null
+            ? (json['assetManufacture'])
+            : 'نامشخص',
+        assetModel:
+            json['assetModel'] != null ? (json['assetModel']) : 'نامشخص',
+        assetSerialNumber: json['assetSerialNumber'] != null
+            ? (json['assetSerialNumber'])
+            : 'نامشخص',
+        assetStatus:
+            json['assetStatus'] != null ? (json['assetStatus']) : false,
+        assetIsStock:
+            json['assetIsStock'] != null ? (json['assetIsStock']) : false,
+        assetMachineCategory: 0);
   }
 
   Map<String, dynamic> toJson() {
@@ -124,7 +130,7 @@ class Asset {
       data['assetIsLocatedAt'] = this.assetIsLocatedAt!.toJson();
     }
 
-    data['assetCategory'] = this.assetCategory.toJson();
+    // data['assetCategory'] = this.assetCategory.toJson();
 
     data['assetTypes'] = this.assetTypes;
     data['assetName'] = this.assetName;

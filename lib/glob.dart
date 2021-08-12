@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 class ServerStatus {
   static int newestBinary = 20;
   static bool serverUp = false;
-  static const String ServerAddress = "http://192.168.2.175:8000";
+  static const String ServerAddress = "http://127.0.0.1:8000";
   static var priority = [
     '',
     'خیلی زیاد',

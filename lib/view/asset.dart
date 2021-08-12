@@ -1,5 +1,6 @@
 import 'package:cmms2/glob.dart';
 import 'package:cmms2/models/assets.dart';
+import 'package:cmms2/view/asset_detail.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -75,25 +76,24 @@ class AssetListView extends StatelessWidget {
     return ListView.builder(
         itemCount: data.length,
         itemBuilder: (context, index) {
-          return newMethod(
-              context, data[index], data[index].maintenanceType.color);
+          return newMethod(context, data[index]);
         });
   }
 
-  Card newMethod(dynamic context, Asset index, String color) {
+  Card newMethod(dynamic context, Asset index) {
     return Card(
         margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
         elevation: 10.0,
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) => TabBarWorkOrder(
-            //             id2: index.id,
-            //           )),
-            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TabBarAsset(
+                        id2: index.id,
+                      )),
+            );
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
