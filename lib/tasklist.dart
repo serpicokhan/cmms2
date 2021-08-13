@@ -155,7 +155,21 @@ class TaskListView extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: ListTile(
                 title: Text(index.taskDescription),
-                subtitle: Text(index.taskDescription),
+                subtitle: Column(
+                  children: <Widget>[
+                    Text(index.taskDescription),
+                    (index.taskTypes == 3)
+                        ? Align(
+                            child: TextButton(
+                                child: Text(
+                                  'button',
+                                ),
+                                onPressed: () {}),
+                            alignment: Alignment.centerLeft,
+                          )
+                        : Container()
+                  ],
+                ),
                 leading: CircleAvatar(backgroundColor: Colors.green[200]),
                 trailing: Icon(Icons.ac_unit)),
           ),

@@ -7,6 +7,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'assetfilelist.dart';
+import 'assetpart.dart';
+import 'assetwo.dart';
+
 class TabBarAsset extends StatelessWidget {
   const TabBarAsset({Key? key, required this.id2}) : super(key: key);
   final int id2;
@@ -14,13 +18,14 @@ class TabBarAsset extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: DefaultTabController(
-        length: 4,
+        length: 5,
         child: Scaffold(
           appBar: AppBar(
             bottom: const TabBar(
               tabs: [
                 Tab(icon: Icon(Icons.directions_car)),
                 Tab(icon: Icon(Icons.directions_transit)),
+                Tab(icon: Icon(Icons.directions_bike)),
                 Tab(icon: Icon(Icons.directions_bike)),
                 Tab(icon: Icon(Icons.directions_bike)),
               ],
@@ -30,9 +35,12 @@ class TabBarAsset extends StatelessWidget {
           body: TabBarView(
             children: [
               AssetDetail(id: id2),
-              Icon(Icons.directions_car),
-              Icon(Icons.directions_car),
-              Icon(Icons.directions_car),
+              ListViewAssetPart(id: id2),
+              ListViewAssetWo(
+                id: id2,
+              ),
+              ListViewAssetFile(id: id2),
+              Icon(Icons.directions_car)
             ],
           ),
         ),

@@ -1,6 +1,7 @@
 import 'package:cmms2/glob.dart';
 import 'package:cmms2/models/assets.dart';
 import 'package:cmms2/view/asset_detail.dart';
+import 'package:flutter_search_bar/flutter_search_bar.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -28,7 +29,9 @@ class _ListViewAssetState extends State<ListViewAsset>
 
   @override
   Widget build(BuildContext context) {
-    return AssetListView(titles: titles, subtitles: subtitles, icons: icons);
+    return Scaffold(
+        body:
+            AssetListView(titles: titles, subtitles: subtitles, icons: icons));
   }
 }
 
@@ -84,6 +87,7 @@ class AssetListView extends StatelessWidget {
     return Card(
         margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
         elevation: 10.0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
