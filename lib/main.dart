@@ -2,6 +2,7 @@
 
 import 'package:cmms2/glob.dart';
 import 'package:cmms2/view/asset.dart';
+import 'package:cmms2/view/qrcode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
 
@@ -21,16 +22,13 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  List<String> titles = ['دستور کارها', 'دارایی ها و تجهیزات'];
+  List<String> titles = ['دستور کارها', 'دارایی ها و تجهیزات', 'sads'];
   String appbarTitle = 'دستور کار';
   static List<Widget> _pages = <Widget>[
     // ListViewHome(),
     CallsPage(),
     ListViewAsset(),
-    Icon(
-      Icons.chat,
-      size: 150,
-    ),
+    QRViewExample(),
   ];
   int _selectedIndex = 0;
   late SearchBar searchBar;

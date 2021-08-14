@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cmms2/glob.dart';
 import 'package:cmms2/models/assets.dart';
+import 'package:cmms2/view/assetmeterlist.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,7 @@ class TabBarAsset extends StatelessWidget {
                 id: id2,
               ),
               ListViewAssetFile(id: id2),
-              Icon(Icons.directions_car)
+              ListViewAssetMeter(id: id2)
             ],
           ),
         ),
