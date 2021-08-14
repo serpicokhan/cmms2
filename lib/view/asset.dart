@@ -1,7 +1,6 @@
 import 'package:cmms2/glob.dart';
 import 'package:cmms2/models/assets.dart';
 import 'package:cmms2/view/asset_detail.dart';
-import 'package:flutter_search_bar/flutter_search_bar.dart';
 
 import 'package:http/http.dart' as http;
 

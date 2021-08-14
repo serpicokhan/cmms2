@@ -1,7 +1,6 @@
 import 'package:cmms2/glob.dart';
 import 'package:cmms2/models/assetmeter.dart';
-import 'package:cmms2/models/workorderpart.dart';
-import 'package:cmms2/view/wopart_detail.dart';
+import 'package:cmms2/models/metercode.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -30,9 +29,29 @@ class _ListViewAssetMeterState extends State<ListViewAssetMeter>
   ];
 
   final icons = [Icons.ac_unit, Icons.access_alarm, Icons.access_time];
+  Future<AssetMeterReading>? _futureAlbum;
+  final TextEditingController _controller = TextEditingController();
 
+  FutureBuilder<AssetMeterReading> buildFutureBuilder() {
+    return FutureBuilder<AssetMeterReading>(
+      future: _futureAlbum,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Text(snapshot.data!.assetMeterMeterReading.toString());
+        } else if (snapshot.hasError) {
+          return Text('${snapshot.error}');
+        }
+
+        return const CircularProgressIndicator();
+      },
+    );
+  }
+
+  String dropdownvalue2 = '';
   @override
   Widget build(BuildContext context) {
+    ServerStatus.meterCodes.add(new MeterCode(
+        id: 0, meterCode: '', meterDescription: '', meterAbbr: ''));
     return Scaffold(
       body: AssetMeterListView(id: widget.id),
       floatingActionButton: FloatingActionButton(
@@ -44,35 +63,46 @@ class _ListViewAssetMeterState extends State<ListViewAssetMeter>
               context: context,
               builder: (context) {
                 return Column(
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    ListTile(
-                      leading: new Icon(Icons.photo),
-                      title: new Text('Photo'),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
+                    TextField(
+                      controller: _controller,
+                      decoration:
+                          const InputDecoration(hintText: 'Enter Title'),
                     ),
-                    ListTile(
-                      leading: new Icon(Icons.music_note),
-                      title: new Text('Music'),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
+                    new ListTile(
+                      leading: const Icon(Icons.phone),
+                      title: DropdownButton<String>(
+                        value: '',
+                        // icon: const Icon(Icons.arrow_downward),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: const TextStyle(color: Colors.deepPurple),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownvalue2 = newValue!;
+                          });
+                        },
+                        items: ServerStatus.meterCodes
+                            .map<DropdownMenuItem<String>>((MeterCode value) {
+                          return DropdownMenuItem<String>(
+                              value: value.meterDescription,
+                              child: Text(value.meterDescription));
+                        }).toList(),
+                      ),
                     ),
-                    ListTile(
-                      leading: new Icon(Icons.videocam),
-                      title: new Text('Video'),
-                      onTap: () {
-                        Navigator.pop(context);
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _futureAlbum =
+                              createAlbum(int.parse(widget.id.toString()));
+                        });
                       },
-                    ),
-                    ListTile(
-                      leading: new Icon(Icons.share),
-                      title: new Text('Share'),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
+                      child: const Text('Create Data'),
                     ),
                   ],
                 );
@@ -80,6 +110,28 @@ class _ListViewAssetMeterState extends State<ListViewAssetMeter>
         },
       ),
     );
+  }
+}
+
+Future<AssetMeterReading> createAlbum(int id) async {
+  final response = await http.post(
+    Uri.parse(ServerStatus.ServerAddress + '/api/v1/Asset/Meters/Add/$id/'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'title': id.toString(),
+    }),
+  );
+
+  if (response.statusCode == 201) {
+    // If the server did return a 201 CREATED response,
+    // then parse the JSON.
+    return AssetMeterReading.fromJson(jsonDecode(response.body));
+  } else {
+    // If the server did not return a 201 CREATED response,
+    // then throw an exception.
+    throw Exception('Failed to create album.');
   }
 }
 

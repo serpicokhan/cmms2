@@ -4,7 +4,6 @@ import 'package:cmms2/glob.dart';
 import 'package:cmms2/view/asset.dart';
 import 'package:cmms2/view/qrcode.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_search_bar/flutter_search_bar.dart';
 
 import 'with_tabs.dart';
 
@@ -31,29 +30,12 @@ class _AppState extends State<App> {
     QRViewExample(),
   ];
   int _selectedIndex = 0;
-  late SearchBar searchBar;
-
-  _AppState() {
-    searchBar = new SearchBar(
-        inBar: false,
-        setState: setState,
-        onSubmitted: print,
-        buildDefaultAppBar: buildAppBar);
-    // setState(() {});
-  }
-
-  AppBar buildAppBar(BuildContext context) {
-    return new AppBar(
-        title: new Text(appbarTitle),
-        actions: [searchBar.getSearchAction(context)]);
-  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Job Portal',
         home: Scaffold(
-          appBar: searchBar.build(context),
           body: IndexedStack(
             index: _selectedIndex,
             children: _pages,

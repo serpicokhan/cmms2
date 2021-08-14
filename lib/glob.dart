@@ -1,10 +1,11 @@
 import 'dart:convert';
+import 'package:cmms2/models/metercode.dart';
 import 'package:http/http.dart' as http;
 
 class ServerStatus {
   static int newestBinary = 20;
   static bool serverUp = false;
-  static const String ServerAddress = "http://192.168.2.175:8000";
+  static const String ServerAddress = "http://192.168.1.53:8000";
   static var priority = [
     '',
     'خیلی زیاد',
@@ -14,6 +15,7 @@ class ServerStatus {
     'خیلی کم',
   ];
   static late List<MaintenanceType> maintenanceType = [];
+  static late List<MeterCode> meterCodes = [];
   static Future<List<MaintenanceType>> initMaintenaceType() {
     return fetchMaintenaceType();
   }
@@ -21,6 +23,10 @@ class ServerStatus {
   static void init() {
     fetchMaintenaceType().then<List<MaintenanceType>>((value) {
       maintenanceType = value;
+      return value;
+    });
+    fetchMeterCode().then<List<MeterCode>>((value) {
+      meterCodes = value;
       return value;
     });
   }
@@ -56,6 +62,19 @@ Future<List<MaintenanceType>> fetchMaintenaceType() async {
     return jsonResponse
         .map((job) => new MaintenanceType.fromJson(job))
         .toList();
+  } else {
+    throw Exception('Failed to load jobs from API');
+  }
+}
+
+Future<List<MeterCode>> fetchMeterCode() async {
+  // print("http://{$ServerStatus.ServerAddress}/v1/mt/");
+  final response = await http
+      .get(Uri.parse(ServerStatus.ServerAddress + "/api/v1/MeterCode/"));
+
+  if (response.statusCode == 200) {
+    List jsonResponse = json.decode(utf8.decode(response.bodyBytes));
+    return jsonResponse.map((job) => new MeterCode.fromJson(job)).toList();
   } else {
     throw Exception('Failed to load jobs from API');
   }
