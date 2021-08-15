@@ -125,9 +125,10 @@ class _AssetFileListViewState extends State<AssetFileListView> {
 
     Map body = {'Session': '123213', 'UserId': '12312321'};
     try {
-      final response = await http.post(uri,
-          headers: {"Content-Type": "application/json"},
-          body: utf8.encode(json.encode(body)));
+      final response = await http.get(
+        uri,
+        headers: {"Content-Type": "application/json"},
+      );
 
       if (response.contentLength == 0) {
         return;
@@ -136,10 +137,10 @@ class _AssetFileListViewState extends State<AssetFileListView> {
           ExtStorage.DIRECTORY_DOWNLOADS);
       Directory? tempDir = await getExternalStorageDirectory();
       String tempPath = path;
-      File file = new File('$tempPath/123.jpg');
+      File file = new File('$tempPath/78997.jpg');
       await file.writeAsBytes(response.bodyBytes);
       _showAction2(context, "completed");
-      _showAction2(context, '$tempPath/123.jpg');
+      _showAction2(context, '$tempPath/658.jpg');
     } catch (value) {
       _showAction2(context, value.toString());
     }
