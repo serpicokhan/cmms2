@@ -34,7 +34,7 @@ dependencies:
   dio: ^4.0.0
   flutter_downloader: ^1.6.1
   qr_code_scanner: ^0.5.2
-  
+  grouped_list: ^4.1.0
   
 
   # create QR Code

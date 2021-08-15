@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:cmms2/glob.dart';
 import 'package:cmms2/models/assetfile.dart';
-import 'package:cmms2/models/wofile.dart';
 
 import 'package:flutter_downloader/flutter_downloader.dart';
 
@@ -95,13 +94,13 @@ class _AssetFileListViewState extends State<AssetFileListView> {
   // late Directory appDocDir;
   // Future<Directory?>? _appDocumentsDirectory;
   late String dir;
-  Future<Directory> _requestAppDocumentsDirectory() async {
-    return getApplicationDocumentsDirectory();
+  Future<Directory?> _requestAppDocumentsDirectory() async {
+    return getExternalStorageDirectory();
   }
 
   Future<List<AssetFile>> _fetchassetFile(id) async {
     // appDocDir = await getApplicationDocumentsDirectory();
-    _requestAppDocumentsDirectory().then((value) => dir = value.path);
+    _requestAppDocumentsDirectory().then((value) => dir = value!.path);
 
     final response = await http.get(
         Uri.parse(ServerStatus.ServerAddress + '/api/v1/Asset/Files/$id/'));
@@ -161,7 +160,7 @@ class _AssetFileListViewState extends State<AssetFileListView> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListTile(
-                title: Text((index.assetFile.split('/').last)),
+                title: Text(Uri.decodeFull((index.assetFile.split('/').last))),
                 subtitle: Text('نام فایل'),
                 leading: CircleAvatar(backgroundColor: Colors.green[200]),
                 trailing: Icon(Icons.ac_unit)),

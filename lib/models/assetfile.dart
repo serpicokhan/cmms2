@@ -13,20 +13,20 @@ class AssetFile {
   factory AssetFile.fromJson(Map<String, dynamic> json) {
     return AssetFile(
         id: (json['id'] != null) ? json['id'] : 1,
-        assetFile: (json['AssetFile'] != null) ? json['AssetFile'] : '',
-        assetFiledateAdded: (json['AssetFiledateAdded'] != null)
-            ? json['AssetFiledateAdded']
+        assetFile: (json['assetFile'] != null) ? json['assetFile'] : '',
+        assetFiledateAdded: (json['assetFiledateAdded'] != null)
+            ? json['assetFiledateAdded']
             : '',
         assetFileAssetId:
-            (json['AssetFileAssetId'] != null) ? json['AssetFileAssetId'] : 1);
+            (json['assetFileAssetId'] != null) ? json['assetFileAssetId'] : 1);
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['AssetFile'] = this.assetFile;
-    data['AssetFiledateAdded'] = this.assetFiledateAdded;
-    data['AssetFileAssetrkorder'] = this.assetFileAssetId;
+    data['assetFile'] = this.assetFile;
+    data['assetFiledateAdded'] = this.assetFiledateAdded;
+    data['assetFileAssetrkorder'] = this.assetFileAssetId;
     return data;
   }
 }
