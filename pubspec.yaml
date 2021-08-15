@@ -35,7 +35,10 @@ dependencies:
   flutter_downloader: ^1.6.1
   qr_code_scanner: ^0.5.2
   grouped_list: ^4.1.0
-  
+  permission_handler: ^8.1.4+2
+  flutter_local_notifications: ^8.1.1+1
+  path: ^1.8.0
+  ext_storage: ^1.0.3
 
   # create QR Code
   
