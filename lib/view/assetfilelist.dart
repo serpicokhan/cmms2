@@ -368,9 +368,8 @@ class _AssetFileListViewState extends State<AssetFileListView> {
             // _download(
             //     'http://ipv4.download.thinkbroadband.com/5MB.zip', '5MB.zip');
             // downloadFile();
-            // getImage(
-            // "https://www.itl.cat/pngfile/big/10-100326_desktop-wallpaper-hd-full-screen-free-download-full.jpg");
-            downloadFile2(ServerStatus.ServerAddress + '/' + index.assetFile);
+            getImage(" http://www.africau.edu/images/default/sample.pdf");
+            // downloadFile2(ServerStatus.ServerAddress + '/' + index.assetFile);
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
