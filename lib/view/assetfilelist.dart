@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cmms2/glob.dart';
 
@@ -13,6 +14,7 @@ import 'dart:convert';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:uuid/uuid.dart';
 
 import 'fab.dart';
 import 'package:path/path.dart' as path;
@@ -133,17 +135,86 @@ class _AssetFileListViewState extends State<AssetFileListView> {
       if (response.contentLength == 0) {
         return;
       }
-      var path = await ExtStorage.getExternalStoragePublicDirectory(
+      var path2 = await ExtStorage.getExternalStoragePublicDirectory(
           ExtStorage.DIRECTORY_DOWNLOADS);
-      Directory? tempDir = await getExternalStorageDirectory();
-      String tempPath = path;
-      File file = new File('$tempPath/78997.jpg');
-      await file.writeAsBytes(response.bodyBytes);
-      _showAction2(context, "completed");
-      _showAction2(context, '$tempPath/658.jpg');
+      // Directory? tempDir = await getExternalStorageDirectory();
+
+      final filename = Uri.decodeFull(path.basename(url));
+      final extension = path.extension(url);
+      String tempPath = path2;
+      File file = new File('$tempPath/$filename');
+      var fileiscreated = await File('$tempPath/$filename').exists();
+      if (!fileiscreated) {
+        await file.writeAsBytes(response.bodyBytes);
+        _showAction2(context, "completed");
+        _showAction2(context, '$tempPath/658.jpg');
+      } else {
+        try {
+          File file2 = new File('$tempPath/' + Uuid().v4() + ".$extension");
+          await file2.writeAsBytes(response.bodyBytes);
+          _showAction2(context, "completed");
+          // _showAction2(context, "no suche a file");
+        } catch (e) {
+          _showAction2(context, e.toString());
+        }
+      }
     } catch (value) {
       _showAction2(context, value.toString());
     }
+  }
+
+  downloadFile2(String url) async {
+    var httpClient = http.Client();
+    var uri = Uri.parse(url);
+    var request = new http.Request('GET', Uri.parse(url));
+    var response = httpClient.send(request);
+    String dir = await ExtStorage.getExternalStoragePublicDirectory(ExtStorage
+        .DIRECTORY_DOWNLOADS); //(await getApplicationDocumentsDirectory()).path;
+    final filename = Uri.decodeFull(path.basename(url));
+    final extension = path.extension(url);
+
+    List<List<int>> chunks = [];
+    int downloaded = 0;
+
+    response.asStream().listen((http.StreamedResponse r) {
+      r.stream.listen((List<int> chunk) {
+        // Display percentage of completion
+        // debugPrint('downloadPercentage: ${downloaded / r.contentLength * 100}');
+
+        chunks.add(chunk);
+        downloaded += chunk.length;
+      }, onDone: () async {
+        // Display percentage of completion
+        // debugPrint('downloadPercentage: ${downloaded / r.contentLength * 100}');
+
+        // Save the file
+        File file = new File('$dir/$filename');
+        try {
+          if (!await file.exists()) {
+            final Uint8List bytes = Uint8List(r.contentLength!.toInt());
+            int offset = 0;
+            for (List<int> chunk in chunks) {
+              bytes.setRange(offset, offset + chunk.length, chunk);
+              offset += chunk.length;
+            }
+            await file.writeAsBytes(bytes);
+            return;
+          } else {
+            File file2 = new File('$dir/' + Uuid().v4() + ".$extension");
+            final Uint8List bytes = Uint8List(r.contentLength!.toInt());
+            int offset = 0;
+            for (List<int> chunk in chunks) {
+              bytes.setRange(offset, offset + chunk.length, chunk);
+              offset += chunk.length;
+            }
+            await file2.writeAsBytes(bytes);
+          }
+          _showAction2(context, 'completed');
+        } catch (e) {
+          _showAction2(context, e.toString());
+        }
+      });
+    });
   }
 
   Future downloadFile() async {
@@ -297,8 +368,9 @@ class _AssetFileListViewState extends State<AssetFileListView> {
             // _download(
             //     'http://ipv4.download.thinkbroadband.com/5MB.zip', '5MB.zip');
             // downloadFile();
-            getImage(
-                "https://www.itl.cat/pngfile/big/10-100326_desktop-wallpaper-hd-full-screen-free-download-full.jpg");
+            // getImage(
+            // "https://www.itl.cat/pngfile/big/10-100326_desktop-wallpaper-hd-full-screen-free-download-full.jpg");
+            downloadFile2(ServerStatus.ServerAddress + '/' + index.assetFile);
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),

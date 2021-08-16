@@ -25,7 +25,7 @@ class Asset {
   String? assetManufacture;
   String? assetModel;
   String? assetSerialNumber;
-  bool? assetStatus;
+  bool assetStatus;
   bool? assetIsStock;
   int? assetMachineCategory;
 
