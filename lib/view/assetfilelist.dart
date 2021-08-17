@@ -129,6 +129,7 @@ class _AssetFileListViewState extends State<AssetFileListView> {
         uri,
         headers: {"Content-Type": "application/json"},
       );
+      _showAction2(context, uri.toString());
 
       if (response.contentLength == 0) {
         return;
@@ -137,10 +138,11 @@ class _AssetFileListViewState extends State<AssetFileListView> {
           ExtStorage.DIRECTORY_DOWNLOADS);
       Directory? tempDir = await getExternalStorageDirectory();
       String tempPath = path;
-      File file = new File('$tempPath/78997.jpg');
+
+      File file = new File('$tempPath/' + url.split('/').last);
       await file.writeAsBytes(response.bodyBytes);
       _showAction2(context, "completed");
-      _showAction2(context, '$tempPath/658.jpg');
+      _showAction2(context, '$tempPath/' + url.split('/').last);
     } catch (value) {
       _showAction2(context, value.toString());
     }
@@ -297,8 +299,9 @@ class _AssetFileListViewState extends State<AssetFileListView> {
             // _download(
             //     'http://ipv4.download.thinkbroadband.com/5MB.zip', '5MB.zip');
             // downloadFile();
-            getImage(
-                "https://www.itl.cat/pngfile/big/10-100326_desktop-wallpaper-hd-full-screen-free-download-full.jpg");
+            // getImage(
+            //     "https://www.itl.cat/pngfile/big/10-100326_desktop-wallpaper-hd-full-screen-free-download-full.jpg");
+            getImage(ServerStatus.ServerAddress + index.assetFile);
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
