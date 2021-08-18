@@ -39,6 +39,7 @@ dependencies:
   flutter_local_notifications: ^8.1.1+1
   path: ^1.8.0
   ext_storage: ^1.0.3
+  uuid: ^3.0.4
 
   # create QR Code
   

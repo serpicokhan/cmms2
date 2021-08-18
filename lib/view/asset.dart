@@ -1,7 +1,6 @@
 import 'package:cmms2/glob.dart';
 import 'package:cmms2/models/assets.dart';
 import 'package:cmms2/view/asset_detail.dart';
-import 'package:grouped_list/grouped_list.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -17,35 +16,27 @@ class _ListViewAssetState extends State<ListViewAsset>
     with AutomaticKeepAliveClientMixin<ListViewAsset> {
   @override
   bool get wantKeepAlive => true;
-  final titles = ["List 1", "List 2", "List 3"];
-
-  final subtitles = [
-    "Here is list 1 subtitle",
-    "Here is list 2 subtitle",
-    "Here is list 3 subtitle"
-  ];
 
   final icons = [Icons.ac_unit, Icons.access_alarm, Icons.access_time];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body:
-            AssetListView(titles: titles, subtitles: subtitles, icons: icons));
+    return Scaffold(appBar: AppBar(), body: AssetListView());
   }
 }
 
-class AssetListView extends StatelessWidget {
+class AssetListView extends StatefulWidget {
   const AssetListView({
     Key? key,
-    required this.titles,
-    required this.subtitles,
-    required this.icons,
   }) : super(key: key);
 
-  final List<String> titles;
-  final List<String> subtitles;
-  final List<IconData> icons;
+  @override
+  _AssetListViewState createState() => _AssetListViewState();
+}
+
+class _AssetListViewState extends State<AssetListView> {
+  bool isSwitch = false;
+
   Future<List<Asset>> _fetchAssets() async {
     final response = await http
         .get(Uri.parse(ServerStatus.ServerAddress + '/api/v1/Assets/'));
@@ -76,31 +67,34 @@ class AssetListView extends StatelessWidget {
   }
 
   ListView newMethod2(data) {
-    // print("1234")
-    // return new GroupedListView<dynamic, String>(
-    //   elements: data,
-    //   groupBy: (element) => element['id'],
-    //   groupComparator: (value1, value2) => value2.compareTo(value1),
-    //   itemComparator: (item1, item2) => item1['id'].compareTo(item2['id']),
-    //   order: GroupedListOrder.DESC,
-    //   useStickyGroupSeparators: true,
-    //   groupSeparatorBuilder: (String value) => Padding(
-    //     padding: const EdgeInsets.all(8.0),
-    //     child: Text(
-    //       value,
-    //       textAlign: TextAlign.center,
-    //       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-    //     ),
-    //   ),
-    //   itemBuilder: (c, element) {
-    //     return newMethod(c, element);
-    //   },
-    // );
-
     return ListView.builder(
-        itemCount: data.length,
+        itemCount: data.length + 1,
         itemBuilder: (context, index) {
-          return newMethod(context, data[index]);
+          if (index == 0) {
+            return Card(
+              margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
+              elevation: 10.0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5)),
+              child: InkWell(
+                splashColor: Colors.blue.withAlpha(30),
+                onTap: () {},
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    child: Text('Kindacode.com'),
+                    style: ElevatedButton.styleFrom(
+                        primary: Colors.pink,
+                        fixedSize: Size(300, 100),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50))),
+                  ),
+                ),
+              ),
+            );
+          }
+          return newMethod(context, data[index - 1]);
         });
   }
 
@@ -126,8 +120,21 @@ class AssetListView extends StatelessWidget {
                 title: Text(index.assetName),
                 subtitle: Text(index.assetCode.toString()),
                 leading: CircleAvatar(backgroundColor: Colors.amber[100]),
-                trailing: Icon(icons[0]))),
+                trailing: Switch(
+                  value: index.assetStatus,
+                  onChanged: ontoggle,
+                ))),
       ),
     );
+  }
+
+  void ontoggle(bool value) {
+    setState(() {
+      if (isSwitch) {
+        isSwitch = false;
+      } else {
+        isSwitch = true;
+      }
+    });
   }
 }
