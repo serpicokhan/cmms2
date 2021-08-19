@@ -2,6 +2,7 @@
 
 import 'package:cmms2/glob.dart';
 import 'package:cmms2/view/asset.dart';
+import 'package:cmms2/view/auth/signin.dart';
 import 'package:cmms2/view/qrcode.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,7 @@ class _AppState extends State<App> {
     // ListViewHome(),
     CallsPage(),
     ListViewAsset(),
-    QRViewExample(),
+    Icon(Icons.ac_unit) // QRViewExample(),
   ];
   int _selectedIndex = 0;
 
@@ -36,29 +37,32 @@ class _AppState extends State<App> {
     return MaterialApp(
         title: 'Job Portal',
         home: Scaffold(
-          body: IndexedStack(
-            index: _selectedIndex,
-            children: _pages,
-          ), //New//ListViewHome(),
-          bottomNavigationBar: BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.call),
-                label: 'Calls',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.camera),
-                label: 'Camera',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.chat),
-                label: 'Chats',
-              ),
-            ],
-            currentIndex: _selectedIndex, //New
-            onTap: _onItemTapped,
-          ),
-        ));
+          body: SignIn(),
+        )
+        //   body: IndexedStack(
+        //     index: _selectedIndex,
+        //     children: _pages,
+        //   ), //New//ListViewHome(),
+        //   bottomNavigationBar: BottomNavigationBar(
+        //     items: const <BottomNavigationBarItem>[
+        //       BottomNavigationBarItem(
+        //         icon: Icon(Icons.call),
+        //         label: 'Calls',
+        //       ),
+        //       BottomNavigationBarItem(
+        //         icon: Icon(Icons.camera),
+        //         label: 'Camera',
+        //       ),
+        //       BottomNavigationBarItem(
+        //         icon: Icon(Icons.chat),
+        //         label: 'Chats',
+        //       ),
+        //     ],
+        //     currentIndex: _selectedIndex, //New
+        //     onTap: _onItemTapped,
+        //   ),
+        // )
+        );
   }
 
   void _onItemTapped(int value) {

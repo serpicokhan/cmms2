@@ -140,17 +140,20 @@ class _WoDetailState extends State<WoDetail>
                             snapshot.data!.timecreated.substring(0, 8)),
                         subtitle: const Text('زمان ایجاد'),
                       ),
+                      Divider(),
                       new ListTile(
                         leading: const Icon(Icons.person),
                         title: Text(snapshot.data!.description),
                         subtitle: const Text('دستورالعمل'),
                       ),
+                      Divider(),
                       new ListTile(
                         leading: const Icon(Icons.phone),
                         title: new Text(
                             ServerStatus.priority[snapshot.data!.priority]),
                         subtitle: const Text('اولویت'),
                       ),
+                      Divider(),
                       new ListTile(
                           leading: const Icon(Icons.email),
                           title: new Text(snapshot.data!.maintenanceType.name)),
@@ -162,16 +165,19 @@ class _WoDetailState extends State<WoDetail>
                         title: Text(snapshot.data!.assignedTo),
                         subtitle: const Text('کاربر اختصاص داده شده'),
                       ),
+                      Divider(),
                       new ListTile(
                         leading: const Icon(Icons.today),
                         title: Text(snapshot.data!.reqUser),
                         subtitle: const Text('کاربر درخواست کننده'),
                       ),
+                      Divider(),
                       new ListTile(
                         leading: const Icon(Icons.location_history),
                         title: Text(snapshot.data!.company),
                         subtitle: const Text('Not specified'),
                       ),
+                      Divider(),
                       new ListTile(
                         leading: const Icon(Icons.phone),
                         title: DropdownButton<String>(

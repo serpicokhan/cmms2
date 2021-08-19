@@ -1,4 +1,5 @@
 import 'package:cmms2/glob.dart';
+import 'package:flutter/rendering.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -108,7 +109,7 @@ extension HexColor on Color {
       '${blue.toRadixString(16).padLeft(2, '0')}';
 }
 
-class WorkOrderListView extends StatelessWidget {
+class WorkOrderListView extends StatefulWidget {
   const WorkOrderListView({
     Key? key,
     required this.titles,
@@ -119,6 +120,12 @@ class WorkOrderListView extends StatelessWidget {
   final List<String> titles;
   final List<String> subtitles;
   final List<IconData> icons;
+
+  @override
+  _WorkOrderListViewState createState() => _WorkOrderListViewState();
+}
+
+class _WorkOrderListViewState extends State<WorkOrderListView> {
   Future<List<Job>> _fetchJobs() async {
     final response =
         await http.get(Uri.parse(ServerStatus.ServerAddress + '/api/v1/wos/'));
@@ -148,10 +155,61 @@ class WorkOrderListView extends StatelessWidget {
     // return newMethod2();
   }
 
+  final _textController = TextEditingController();
+
+  void _handleSubmitted(String text) {
+    _textController.clear();
+  }
+
+  Widget _buildChip(String label, Color color) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+      child: InkWell(
+        splashColor: Colors.blue.withAlpha(30),
+        onTap: () {},
+        child: ActionChip(
+          elevation: 8.0,
+          padding: EdgeInsets.all(2.0),
+          label: Text(label, style: TextStyle(color: Colors.white)),
+          onPressed: () {
+            // _key.currentState.showSnackBar(SnackBar(
+            //   content: Text('Message...'),
+            // ));
+          },
+          backgroundColor: color,
+          shape: StadiumBorder(
+              side: BorderSide(
+            width: 1,
+            color: Colors.redAccent,
+          )),
+        ),
+      ),
+    );
+  }
+
   ListView newMethod2(data) {
     return ListView.builder(
         itemCount: data.length,
         itemBuilder: (context, index) {
+          if (index == 0) {
+            return IconTheme(
+              data:
+                  IconThemeData(color: Theme.of(context).colorScheme.secondary),
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: 20.0),
+                height: 30.0,
+                child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: <Widget>[
+                      _buildChip('Gamer', Color(0xFFff6666)),
+                      _buildChip('Hacker', Color(0xFF007f5c)),
+                      _buildChip('Developer', Color(0xFF5f65d3)),
+                      _buildChip('Racer', Color(0xFF19ca21)),
+                      _buildChip('Traveller', Color(0xFF60230b)),
+                    ]),
+              ),
+            );
+          }
           return newMethod(
               context, data[index], data[index].maintenanceType.color);
         });
@@ -176,11 +234,19 @@ class WorkOrderListView extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: ListTile(
                 title: Text(index.position),
-                subtitle: Text(index.position),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(index.position),
+                    Text(index.timecreated,
+                        style:
+                            TextStyle(fontSize: 10.0, color: Colors.grey[400]))
+                  ],
+                ),
                 leading: CircleAvatar(
                     backgroundColor:
                         HexColor.fromHex(index.maintenanceType.color)),
-                trailing: Icon(icons[0])),
+                trailing: Icon(Icons.group_work)),
           ),
         ));
   }

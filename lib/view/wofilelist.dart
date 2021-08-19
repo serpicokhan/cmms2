@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:cmms2/glob.dart';
 import 'package:cmms2/models/wofile.dart';
+import 'package:cmms2/view/record/recorded_list_view.dart';
+import 'package:cmms2/view/record/recorder_view.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 
@@ -23,6 +25,40 @@ class ListViewWorkorderFile extends StatefulWidget {
 
 class _ListViewWorkorderFileState extends State<ListViewWorkorderFile>
     with AutomaticKeepAliveClientMixin<ListViewWorkorderFile> {
+  late Directory appDirectory;
+  List<String> records = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getApplicationDocumentsDirectory().then((value) {
+      appDirectory = value;
+      appDirectory.list().listen((onData) {
+        if (onData.path.contains('.aac')) records.add(onData.path);
+      }).onDone(() {
+        records = records.reversed.toList();
+        setState(() {});
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    appDirectory.delete();
+    super.dispose();
+  }
+
+  _onRecordComplete() {
+    records.clear();
+    appDirectory.list().listen((onData) {
+      if (onData.path.contains('.aac')) records.add(onData.path);
+    }).onDone(() {
+      records.sort();
+      records = records.reversed.toList();
+      setState(() {});
+    });
+  }
+
   static const _actionTitles = ['Create Post', 'Upload Photo', 'Upload Video'];
   void _showAction(BuildContext context, int index) {
     showDialog<void>(
@@ -56,13 +92,22 @@ class _ListViewWorkorderFileState extends State<ListViewWorkorderFile>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: WorkorderFileListView(id: widget.id),
+      body: Column(
+        children: [
+          Expanded(
+            flex: 2,
+            child: RecordListView(
+              records: records,
+            ),
+          ),
+          Expanded(flex: 1, child: WorkorderFileListView(id: widget.id)),
+        ],
+      ),
       floatingActionButton: ExpandableFab(
         distance: 112.0,
         children: [
-          ActionButton(
-            onPressed: () => _showAction(context, 0),
-            icon: const Icon(Icons.format_size),
+          RecorderView(
+            onSaved: _onRecordComplete,
           ),
           ActionButton(
             onPressed: () => _showAction(context, 1),
