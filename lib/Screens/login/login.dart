@@ -1,3 +1,4 @@
+import 'package:cmms2/view/home.dart';
 import 'package:flutter/material.dart';
 import 'package:cmms2/Screens/register/register.dart';
 import 'package:cmms2/components/background.dart';
@@ -8,53 +9,48 @@ class LoginScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       body: Background(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.symmetric(horizontal: 40),
-              child: Text(
-                "LOGIN",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF2661FA),
-                    fontSize: 36),
-                textAlign: TextAlign.left,
-              ),
-            ),
             SizedBox(height: size.height * 0.03),
             Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.symmetric(horizontal: 40),
-              child: TextField(
-                decoration: InputDecoration(labelText: "Username"),
-              ),
-            ),
-            SizedBox(height: size.height * 0.03),
-            Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.symmetric(horizontal: 40),
-              child: TextField(
-                decoration: InputDecoration(labelText: "Password"),
-                obscureText: true,
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerRight,
               margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
               child: Text(
-                "Forgot your password?",
+                "سیستم مدیریت تعمیر و نگهداری",
                 style: TextStyle(fontSize: 12, color: Color(0XFF2661FA)),
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.symmetric(horizontal: 40),
+              child: TextField(
+                decoration: InputDecoration(labelText: "نام کاربری"),
+                textDirection: TextDirection.rtl,
+              ),
+            ),
+            SizedBox(height: size.height * 0.03),
+            Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.symmetric(horizontal: 40),
+              child: TextField(
+                decoration: InputDecoration(labelText: "گذرواژه"),
+                obscureText: true,
               ),
             ),
             SizedBox(height: size.height * 0.05),
             Container(
-              alignment: Alignment.centerRight,
+              // alignment: Alignment.centerRight,
               margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
               child: RaisedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FisrtHome()),
+                  );
+                },
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(80.0)),
                 textColor: Colors.white,
@@ -66,8 +62,8 @@ class LoginScreen extends StatelessWidget {
                   decoration: new BoxDecoration(
                       borderRadius: BorderRadius.circular(80.0),
                       gradient: new LinearGradient(colors: [
-                        Color.fromARGB(255, 255, 136, 34),
-                        Color.fromARGB(255, 255, 177, 41)
+                        Color.fromARGB(186, 179, 148, 150),
+                        Color.fromARGB(196, 179, 148, 150)
                       ])),
                   padding: const EdgeInsets.all(0),
                   child: Text(
