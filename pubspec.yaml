@@ -43,8 +43,8 @@ dependencies:
   audioplayers: ^0.19.1
   flutter_audio_recorder2: ^0.0.2
   google_fonts: ^2.1.0
-  local_auth: ^1.1.6
-  provider: ^5.0.0
+  flutter_svg: ^0.22.0
+ 
 
   # create QR Code
   
@@ -65,9 +65,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-    - assets/background.png
-    - assets/
+  assets:    
+    - assets/images/
+    - assets/icons/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

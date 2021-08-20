@@ -1,8 +1,8 @@
 // import 'workorder.dart';
 
+import 'package:cmms2/Screens/Welcome/welcome_screen.dart';
 import 'package:cmms2/glob.dart';
 import 'package:cmms2/view/asset.dart';
-import 'package:cmms2/view/auth/signin.dart';
 import 'package:cmms2/view/qrcode.dart';
 import 'package:flutter/material.dart';
 
@@ -22,23 +22,10 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  List<String> titles = ['دستور کارها', 'دارایی ها و تجهیزات', 'sads'];
-  String appbarTitle = 'دستور کار';
-  static List<Widget> _pages = <Widget>[
-    // ListViewHome(),
-    CallsPage(),
-    ListViewAsset(),
-    Icon(Icons.ac_unit) // QRViewExample(),
-  ];
-  int _selectedIndex = 0;
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Job Portal',
-        home: Scaffold(
-          body: SignIn(),
-        )
+    return MaterialApp(title: 'Job Portal', home: WelcomeScreen()
+        // home: Scaffold(
         //   body: IndexedStack(
         //     index: _selectedIndex,
         //     children: _pages,
@@ -63,12 +50,5 @@ class _AppState extends State<App> {
         //   ),
         // )
         );
-  }
-
-  void _onItemTapped(int value) {
-    setState(() {
-      _selectedIndex = value;
-      appbarTitle = titles[value];
-    });
   }
 }
