@@ -1,17 +1,30 @@
 // import 'workorder.dart';
 
-import 'package:cmms2/Screens/Welcome/welcome_screen.dart';
 import 'package:cmms2/glob.dart';
+import 'package:cmms2/home.dart';
 import 'package:cmms2/view/asset.dart';
 import 'package:cmms2/view/qrcode.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
+import 'Screens/login/login.dart';
 import 'with_tabs.dart';
 
-void main() {
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+  print('Handling a background message ${message.messageId}');
+}
+
+Future<void> main() async {
   runApp(App());
   ServerStatus.init();
-  print(ServerStatus.maintenanceType);
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 }
 
 class App extends StatefulWidget {
@@ -23,8 +36,14 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'Job Portal', home: WelcomeScreen()
+    return MaterialApp(title: 'Job Portal', home: Home()
         // home: Scaffold(
         //   body: IndexedStack(
         //     index: _selectedIndex,
