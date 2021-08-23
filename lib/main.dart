@@ -1,13 +1,11 @@
 // import 'workorder.dart';
 
-// import 'package:cmms2/Screens/Welcome/welcome_screen.dart';
-// import 'package:cmms2/Screens/Login/login_screen.dart';
+import 'package:cmms2/Screens/Welcome/welcome_screen.dart';
 import 'package:cmms2/glob.dart';
 import 'package:cmms2/view/asset.dart';
 import 'package:cmms2/view/qrcode.dart';
 import 'package:flutter/material.dart';
 
-import 'Screens/login/login.dart';
 import 'with_tabs.dart';
 
 void main() {
@@ -26,7 +24,7 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'Job Portal', home: LoginScreen()
+    return MaterialApp(title: 'Job Portal', home: WelcomeScreen()
         // home: Scaffold(
         //   body: IndexedStack(
         //     index: _selectedIndex,

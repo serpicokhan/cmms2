@@ -4,8 +4,8 @@ class Background extends StatelessWidget {
   final Widget child;
 
   const Background({
-    Key? key,
-    required this.child,
+    Key key,
+    @required this.child,
   }) : super(key: key);
 
   @override
@@ -19,16 +19,43 @@ class Background extends StatelessWidget {
         alignment: Alignment.center,
         children: <Widget>[
           Positioned(
-            top: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Image.asset(
-                  "../assets/images/logo.png",
-                  width: MediaQuery.of(context).size.width / 2,
-                  height: MediaQuery.of(context).size.height / 4,
-                ),
-              ),
+            top: 0,
+            right: 0,
+            child: Image.asset(
+              "assets/images/top1.png",
+              width: size.width
+            ),
+          ),
+          Positioned(
+            top: 0,
+            right: 0,
+            child: Image.asset(
+              "assets/images/top2.png",
+              width: size.width
+            ),
+          ),
+          Positioned(
+            top: 50,
+            right: 30,
+            child: Image.asset(
+              "assets/images/main.png",
+              width: size.width * 0.35
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: Image.asset(
+              "assets/images/bottom1.png",
+              width: size.width
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: Image.asset(
+              "assets/images/bottom2.png",
+              width: size.width
             ),
           ),
           child
