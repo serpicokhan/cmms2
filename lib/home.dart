@@ -19,28 +19,6 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-Future<String> createUser(String token) async {
-  final response = await http.post(
-    Uri.parse(ServerStatus.ServerAddress + '/api/v1/Users/Add/'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, String>{
-      'title': token,
-    }),
-  );
-
-  if (response.statusCode == 201) {
-    // If the server did return a 201 CREATED response,
-    // then parse the JSON.
-    return '';
-  } else {
-    // If the server did not return a 201 CREATED response,
-    // then throw an exception.
-    throw Exception('Failed to create album.');
-  }
-}
-
 class _HomeState extends State<Home> {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   late Future<bool> _counter;
