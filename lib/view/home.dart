@@ -11,7 +11,8 @@ import 'asset.dart';
 import 'package:http/http.dart' as http;
 
 class FisrtHome extends StatefulWidget {
-  const FisrtHome({Key? key}) : super(key: key);
+  final int id;
+  const FisrtHome({Key? key, required this.id}) : super(key: key);
 
   @override
   _FisrtHomeState createState() => _FisrtHomeState();

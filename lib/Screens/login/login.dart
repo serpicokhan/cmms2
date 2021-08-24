@@ -28,11 +28,21 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  late User usr;
+  final myUserController = TextEditingController();
+  final myPassController = TextEditingController();
+  late final User usr;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   @override
   initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myUserController.dispose();
+    myPassController.dispose();
+    super.dispose();
   }
 
   @override
@@ -58,6 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
               alignment: Alignment.center,
               margin: EdgeInsets.symmetric(horizontal: 40),
               child: TextField(
+                controller: myUserController,
                 decoration: InputDecoration(labelText: "نام کاربری"),
                 textDirection: TextDirection.rtl,
               ),
@@ -67,7 +78,9 @@ class _LoginScreenState extends State<LoginScreen> {
               alignment: Alignment.center,
               margin: EdgeInsets.symmetric(horizontal: 40),
               child: TextField(
-                decoration: InputDecoration(labelText: "گذرواژه"),
+                controller: myPassController,
+                decoration: InputDecoration(
+                    labelText: "گذرواژه", hintTextDirection: TextDirection.rtl),
                 obscureText: true,
               ),
             ),
@@ -77,14 +90,16 @@ class _LoginScreenState extends State<LoginScreen> {
               margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
               child: ElevatedButton(
                 onPressed: () async {
-                  // _fetchUser('admin', '123456Man').then((value) => usr = value);
-                  usr = User(
-                      id: 1,
-                      password: 'password',
-                      fullName: 'fullName',
-                      personalCode: 'personalCode',
-                      title: 'title',
-                      email: 'email');
+                  _fetchUser('admin', '123456Man').then((value) {
+                    usr = value;
+                  });
+                  // usr = User(
+                  //     id: 1,
+                  //     password: 'password',
+                  //     fullName: 'fullName',
+                  //     personalCode: 'personalCode',
+                  //     title: 'title',
+                  //     email: 'email');
                   if (usr.id != -1) {
                     final snackBar = SnackBar(
                       content: const Text('با موفقیت وارد شدید'),
@@ -98,10 +113,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => FisrtHome()),
+                      MaterialPageRoute(
+                          builder: (context) => FisrtHome(id: usr.id)),
                     );
                     final SharedPreferences prefs = await _prefs;
                     prefs.setBool('_authentificated', true);
+                    prefs.setInt('userid', usr.id);
+                    print("job is Don1!");
                   } else {
                     final snackBar = SnackBar(
                       content: const Text('نام کاربری یا پسورد نامتبر است!'),

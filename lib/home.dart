@@ -23,6 +23,7 @@ class _HomeState extends State<Home> {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   late Future<bool> _counter;
   late bool isloged = false;
+  int userid=-1;
   // Future<bool> _islogin() async {
   //   final SharedPreferences prefs = await _prefs;
   //   final bool counter =
@@ -33,7 +34,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     if (isloged == true) {
-      return FisrtHome();
+      return FisrtHome(id: userid);
     }
     return LoginScreen();
   }
@@ -41,9 +42,9 @@ class _HomeState extends State<Home> {
   @override
   initState() {
     super.initState();
-    _counter = _prefs.then((SharedPreferences prefs) {
+    _prefs.then((SharedPreferences prefs) {
       isloged = (prefs.getBool('_authentificated') != null) ? true : false;
-      return ((prefs.getBool('_authentificated') != null) ? true : false);
+      userid = prefs.getInt('userid') ?? -1;
     });
     // await Firebase.initializeApp();
   }
