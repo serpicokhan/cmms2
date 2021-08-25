@@ -23,7 +23,7 @@ class _HomeState extends State<Home> {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   late Future<bool> _counter;
   late bool isloged = false;
-  int userid=-1;
+  int userid = -1;
   // Future<bool> _islogin() async {
   //   final SharedPreferences prefs = await _prefs;
   //   final bool counter =
@@ -46,6 +46,7 @@ class _HomeState extends State<Home> {
       isloged = (prefs.getBool('_authentificated') != null) ? true : false;
       userid = prefs.getInt('userid') ?? -1;
     });
+    print(isloged.toString() + '' + userid.toString() + '!!!!!!!!!!');
     // await Firebase.initializeApp();
   }
 }

@@ -15,7 +15,8 @@ Future<User> _fetchUser(String username, String password) async {
       ServerStatus.ServerAddress + '/api/v1/Users/$username/$password/'));
 
   if (response.statusCode == 200) {
-    User jsonResponse = json.decode(utf8.decode(response.bodyBytes));
+    User jsonResponse =
+        User.fromJson(json.decode(utf8.decode(response.bodyBytes)));
     return jsonResponse;
   } else {
     throw Exception('Failed  to load wopart from API');
@@ -30,11 +31,18 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final myUserController = TextEditingController();
   final myPassController = TextEditingController();
-  late final User usr;
+  late User usr;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   @override
   initState() {
     super.initState();
+    usr = User(
+        id: -1,
+        password: 'password',
+        fullName: 'fullName',
+        personalCode: 'personalCode',
+        title: 'title',
+        email: 'email');
   }
 
   @override
@@ -90,7 +98,8 @@ class _LoginScreenState extends State<LoginScreen> {
               margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
               child: ElevatedButton(
                 onPressed: () async {
-                  _fetchUser('admin', '123456Man').then((value) {
+                  _fetchUser(myUserController.text, myPassController.text)
+                      .then((value) {
                     usr = value;
                   });
                   // usr = User(
