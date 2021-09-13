@@ -4,7 +4,6 @@ import 'package:cmms2/glob.dart';
 import 'package:cmms2/models/wofile.dart';
 import 'package:cmms2/view/record/recorded_list_view.dart';
 import 'package:cmms2/view/record/recorder_view.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 
 import 'package:http/http.dart' as http;
@@ -48,14 +47,48 @@ class _ListViewWorkorderFileState extends State<ListViewWorkorderFile>
     super.dispose();
   }
 
+  String lastFile = '';
   _onRecordComplete() {
     records.clear();
     appDirectory.list().listen((onData) {
-      if (onData.path.contains('.aac')) records.add(onData.path);
+      if (onData.path.contains('.aac')) {
+        records.add(onData.path);
+        lastFile = onData.path;
+      }
     }).onDone(() {
       records.sort();
       records = records.reversed.toList();
       setState(() {});
+      uploadFile(lastFile, widget.id);
+    });
+  }
+
+  uploadFile(String pathfile, int id) async {
+    var postUri =
+        Uri.parse(ServerStatus.ServerAddress + "/api/v1/WoFile/$id/Post");
+    var request = new http.MultipartRequest("POST", postUri);
+    request.fields['woFile'] = 'blah';
+    request.files.add(new http.MultipartFile.fromBytes(
+      'woFile',
+      await File.fromUri(Uri.parse(pathfile)).readAsBytes(),
+    ));
+    showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Text(pathfile),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('CLOSE'),
+            ),
+          ],
+        );
+      },
+    );
+
+    request.send().then((response) {
+      if (response.statusCode == 200) print("Uploaded!");
     });
   }
 
