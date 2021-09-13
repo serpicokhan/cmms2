@@ -69,9 +69,8 @@ class _ListViewWorkorderFileState extends State<ListViewWorkorderFile>
     var request = new http.MultipartRequest("POST", postUri);
     request.fields['woFile'] = 'blah';
     request.files.add(new http.MultipartFile.fromBytes(
-      'woFile',
-      await File.fromUri(Uri.parse(pathfile)).readAsBytes(),
-    ));
+        'woFile', await File(pathfile).readAsBytes(),
+        filename: pathfile.split("/").last));
     showDialog<void>(
       context: context,
       builder: (context) {
