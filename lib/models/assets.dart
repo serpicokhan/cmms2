@@ -62,10 +62,10 @@ class Asset {
     return Asset(
         id: json['id'],
         assetIsPartOf: json['assetIsPartOf'] != null
-            ? new Asset.fromJson(json['assetIsPartOf'])
+            ? null //new Asset.fromJson(json['assetIsPartOf'])
             : null,
         assetIsLocatedAt: json['assetIsLocatedAt'] != null
-            ? new Asset.fromJson(json['assetIsLocatedAt'])
+            ? null // new Asset.fromJson(json['assetIsLocatedAt'])
             : null,
         assetCategory: json['assetCategory'] != null
             ? new AssetCategory.fromJson(json['assetCategory'])

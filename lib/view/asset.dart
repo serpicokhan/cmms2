@@ -99,33 +99,38 @@ class _AssetListViewState extends State<AssetListView> {
   }
 
   Card newMethod(dynamic context, Asset index) {
-    return Card(
-      margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
-      elevation: 10.0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-      child: InkWell(
-        splashColor: Colors.blue.withAlpha(30),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => TabBarAsset(
-                      id2: index.id,
-                    )),
-          );
-        },
-        child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListTile(
-                title: Text(index.assetName),
-                subtitle: Text(index.assetCode.toString()),
-                leading: CircleAvatar(backgroundColor: Colors.amber[100]),
-                trailing: Switch(
-                  value: index.assetStatus,
-                  onChanged: ontoggle,
-                ))),
-      ),
-    );
+    try {
+      return Card(
+        margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
+        elevation: 10.0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        child: InkWell(
+          splashColor: Colors.blue.withAlpha(30),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TabBarAsset(
+                        id2: index.id,
+                      )),
+            );
+          },
+          child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                  title: Text(index.assetName),
+                  subtitle: Text(index.assetCode.toString()),
+                  leading: CircleAvatar(backgroundColor: Colors.amber[100]),
+                  trailing: Switch(
+                    value: index.assetStatus,
+                    onChanged: ontoggle,
+                  ))),
+        ),
+      );
+    } on Exception catch (exception) {
+      print(index.id);
+    }
+    return Card();
   }
 
   void ontoggle(bool value) {
